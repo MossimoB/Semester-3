@@ -4,16 +4,18 @@ package mossimo.bianco.lab01b;
  *
  * @author sport
  */
-public class FinalExam extends GradedActivity {
+public class PassFailExam extends PassFailActivity {
     private int numQuestions;
     private double pointsEach;
     private int numMissed;
 
-    public FinalExam(int numQuestions, int numMissed) {
+    public PassFailExam(int questions, int missed, double minPassing) {
+        super(minPassing);
+
         double numericScore;
 
-        this.numQuestions = numQuestions;
-        this.numMissed = numMissed;
+        numQuestions = questions;
+        numMissed = missed;
 
         pointsEach = 100.0 / numQuestions;
         numericScore = 100.0 - (numMissed * pointsEach);
