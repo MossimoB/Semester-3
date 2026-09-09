@@ -85,6 +85,7 @@ public class App extends Application {
         private Label correctLabel;
         private Label incorrectLabel;
         private Label accuracyLabel;
+        private Label statusLabel;
         private Button nextButton;
         private Button resetButton;
         
@@ -109,6 +110,7 @@ public class App extends Application {
         correctLabel = new Label();
         incorrectLabel = new Label();
         accuracyLabel = new Label();
+        statusLabel = new Label();
         
         // next and reset buttons
         nextButton = new Button("Next");
@@ -138,6 +140,7 @@ public class App extends Application {
                 correctLabel,
                 incorrectLabel,
                 accuracyLabel,
+                statusLabel,
                 nextButton,
                 resetButton,
                 
@@ -182,6 +185,12 @@ public class App extends Application {
         } else {
             double accuracy = (double) correctKeyStrokes / totalKeyStrokes * 100;
             accuracyLabel.setText(String.format("Accuracy: %.1f%%", accuracy));
+        }
+        
+        if (responseField.getText().length() == texts[currentTextIndex].length()) {
+            statusLabel.setText("Complete!");
+        } else {
+            statusLabel.setText("");
         }
     }
         
@@ -297,7 +306,8 @@ public class App extends Application {
         Button virtualKey = virtualKeys.get(keyCode);
         
         if (virtualKey != null) {
-            virtualKey.setStyle("-fx-background-color: lightgray;");
+            virtualKey.setStyle("-fx-background-color: #555555;"
+                    + "-fx-text-fill: white;");
             
             pressedKeyLabel.setText("Last key pressed: " + keyCode);
             pressedKeyLabel.setStyle("");
