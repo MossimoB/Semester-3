@@ -84,6 +84,8 @@ public class App extends Application {
         private Label pressedKeyLabel;
         private Label correctLabel;
         private Label incorrectLabel;
+        private Button nextButton;
+        private Button resetButton;
         
         // virtaul key matches keyboard key
         private final Map<KeyCode, Button> virtualKeys = new HashMap();
@@ -106,6 +108,16 @@ public class App extends Application {
         correctLabel = new Label();
         incorrectLabel = new Label();
         
+        // next and reset buttons
+        nextButton = new Button("Next");
+        resetButton = new Button("Reset");
+        
+        nextButton.setFocusTraversable(false);
+        resetButton.setFocusTraversable(false);
+        
+        nextButton.setOnAction(e -> nextText());
+        resetButton.setOnAction(e -> reset());
+        
         // first excercise
         updateDisplay();
         
@@ -123,6 +135,8 @@ public class App extends Application {
                 pressedKeyLabel,
                 correctLabel,
                 incorrectLabel,
+                nextButton,
+                resetButton,
                 
                 createKeyboard()
         );
@@ -217,6 +231,7 @@ public class App extends Application {
         addKey(bottomRow, "B", KeyCode.B);
         addKey(bottomRow, "N", KeyCode.N);
         addKey(bottomRow, "M", KeyCode.M);
+        addKey(bottomRow, ".", KeyCode.PERIOD);
         
         addKey(spaceRow, "Space", KeyCode.SPACE);
         
@@ -324,6 +339,10 @@ public class App extends Application {
             return " ";
         }
         
+        if (keyCode == KeyCode.PERIOD) {
+            return ".";
+        }
+        
         if (keyCode.isLetterKey()) {
             String character = keyCode.toString().toLowerCase();
             
@@ -375,6 +394,31 @@ public class App extends Application {
             
             updateDisplay();
         }
+    }
+    
+    /**
+     * Moves to the next exercise
+     */
+    private void nextText() {
+        if (currentTextIndex < texts.length - 1) {
+            currentTextIndex++;
+        } else {
+            currentTextIndex = 0;
+        }
+        
+        responseField.clear();
+        
+        correctKeyStrokes = 0;
+        incorrectKeyStrokes = 0;
+        
+        pressedKeyLabel.setText("Last key pressed: ");
+        pressedKeyLabel.setStyle("");
+        
+        shiftPressed = false;
+        
+        updateDisplay();
+        
+        responseField.getParent().requestFocus();
     }
 
     public static void main(String[] args) {
