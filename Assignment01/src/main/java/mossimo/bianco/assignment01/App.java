@@ -119,6 +119,14 @@ public class App extends Application {
         );
         
         Scene scene = new Scene(root, 1200, 600);
+        
+        scene.setOnKeyPressed(e -> {
+            handleKeyPressed(e.getCode());
+        });
+        
+        scene.setOnKeyReleased(e -> {
+            handleKeyReleased(e.getCode());
+        });
 
         stage.setTitle("Typing Tutor");
         stage.setScene(scene);
@@ -227,6 +235,22 @@ public class App extends Application {
         virtualKeys.put(keyCode, button);
         
         row.getChildren().add(button);
+    }
+    
+    private void handleKeyPressed(KeyCode keyCode) {
+        Button virtualKey = virtualKeys.get(keyCode);
+        
+        if (virtualKey != null) {
+            virtualKey.setStyle("-fx-background-color: lightgray;");
+        }
+    }
+    
+    private void handleKeyReleased(KeyCode keyCode) {
+        Button virtualKey = virtualKeys.get(keyCode);
+        
+        if (virtualKey != null) {
+            virtualKey.setStyle("");
+        }
     }
 
     public static void main(String[] args) {
