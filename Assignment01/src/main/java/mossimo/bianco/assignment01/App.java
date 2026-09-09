@@ -418,7 +418,32 @@ public class App extends Application {
         
         updateDisplay();
         
-        responseField.getParent().requestFocus();
+        requestKeyboardFocus();
+    }
+    
+    private void reset() {
+        currentTextIndex = 0;
+        
+        correctKeyStrokes = 0;
+        incorrectKeyStrokes = 0;
+        
+        responseField.clear();
+        
+        pressedKeyLabel.setText("Last key pressed: ");
+        pressedKeyLabel.setStyle("");
+        
+        shiftPressed = false;
+        
+        updateDisplay();
+        
+        requestKeyboardFocus();
+    }
+    
+    /**
+     * Returns keyboard focus to the main application
+     */
+    private void requestKeyboardFocus() {
+        expectedTextLabel.getScene().getRoot().requestFocus();
     }
 
     public static void main(String[] args) {
