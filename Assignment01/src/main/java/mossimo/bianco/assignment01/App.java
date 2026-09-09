@@ -1,9 +1,12 @@
 package mossimo.bianco.assignment01;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -39,7 +42,7 @@ import javafx.stage.Stage;
  * 
  * The quick brown fox jumps over the lazy dog.
  * 
- * FIve big quacking zephyrs jolt my wax bed.
+ * Five big quacking zephyrs jolt my wax bed.
  * 
  * Sympathizing would fix Quaker objectives.
  * 
@@ -52,20 +55,69 @@ import javafx.stage.Stage;
  * JavaFX App
  */
 public class App extends Application {
-
+        // the texts in an array
+        private final String[] texts = {
+            "Try typing this text. Do it as quickly and as accurately as you can.",
+            "Next type another line of input data.",
+            "The quick brown fox jumps over the lazy dog.",
+            "Five big quacking zephyrs jolt my wax bed.",
+            "Sympathizing would fix Quaker objectives.",
+            "A large fawn jumped quickly over the white zinc boxes."
+        };
+        
+        // current excercise
+        private int currentTextIndex = 0;
+        
+        // accuracy
+        private int correctKeyStrokes = 0;
+        private int incorrectKeyStrokes = 0;
+        
+        // UI
+        private Label expectedTextLabel;
+        private TextField responseField;
+        private Label progressLabel;
+        private Label pressedKeyLabel;
+        private Label correctLabel;
+        private Label incorrectLabel;
+        
+        
     @Override
     public void start(Stage stage) {
-        var javaVersion = SystemInfo.javaVersion();
-        var javafxVersion = SystemInfo.javafxVersion();
+        // UI
+        expectedTextLabel = new Label();
+        responseField = new TextField();
+        progressLabel = new Label();
+        pressedKeyLabel = new Label();
+        correctLabel = new Label();
+        incorrectLabel = new Label();
+        
+        // first excercise
+        updateDisplay();
+        
+        // main scene
+        VBox root = new VBox(10);
+        root.setPadding(new Insets(20));
+        root.setAlignment(Pos.TOP_CENTER);
+        
+        // add components
+        root.getChildren().addAll(
+                expectedTextLabel,
+                responseField,
+                progressLabel,
+                pressedKeyLabel,
+                correctLabel,
+                incorrectLabel
+        );
+        
+        Scene scene = new Scene(root, 1200, 600);
 
-        var label = new Label("Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".");
-        var scene = new Scene(new StackPane(label), 640, 480);
+        stage.setTitle("Typing Tutor");
         stage.setScene(scene);
         stage.show();
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 
 }
