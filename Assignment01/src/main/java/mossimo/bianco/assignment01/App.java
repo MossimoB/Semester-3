@@ -115,9 +115,26 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
     }
+    
+        private void updateDisplay() {
+        expectedTextLabel.setText(texts[currentTextIndex]);
+        
+        progressLabel.setText(
+                (currentTextIndex + 1) + " of " + texts.length
+        );
+        
+        pressedKeyLabel.setText("Last key pressed: ");
+        
+        correctLabel.setText(
+                "Correct: " + correctKeyStrokes
+        );
+        
+        incorrectLabel.setText(
+                "Incorrect: " + incorrectKeyStrokes
+        );
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
-
 }
