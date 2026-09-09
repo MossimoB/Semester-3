@@ -144,6 +144,7 @@ public class App extends Application {
     }
         
     private VBox createKeyboard() {
+        // making the keyboard
         VBox keyboard = new VBox(5);
         keyboard.setAlignment(Pos.CENTER);
         
@@ -158,6 +159,48 @@ public class App extends Application {
         
         HBox spaceRow = new HBox(5);
         spaceRow.setAlignment(Pos.CENTER);
+        
+        // adding all keys
+        addKey(topRow, "Q", KeyCode.Q);
+        addKey(topRow, "W", KeyCode.W);
+        addKey(topRow, "E", KeyCode.E);
+        addKey(topRow, "R", KeyCode.R);
+        addKey(topRow, "T", KeyCode.T);
+        addKey(topRow, "Y", KeyCode.Y);
+        addKey(topRow, "U", KeyCode.U);
+        addKey(topRow, "I", KeyCode.I);
+        addKey(topRow, "O", KeyCode.O);
+        addKey(topRow, "P", KeyCode.P);
+        
+        addKey(middleRow, "A", KeyCode.A);
+        addKey(middleRow, "S", KeyCode.S);
+        addKey(middleRow, "D", KeyCode.D);
+        addKey(middleRow, "F", KeyCode.F);
+        addKey(middleRow, "G", KeyCode.G);
+        addKey(middleRow, "H", KeyCode.H);
+        addKey(middleRow, "J", KeyCode.J);
+        addKey(middleRow, "K", KeyCode.K);
+        addKey(middleRow, "L", KeyCode.L);
+        
+        addKey(bottomRow, "Z", KeyCode.Z);
+        addKey(bottomRow, "X", KeyCode.X);
+        addKey(bottomRow, "C", KeyCode.C);
+        addKey(bottomRow, "V", KeyCode.V);
+        addKey(bottomRow, "B", KeyCode.B);
+        addKey(bottomRow, "N", KeyCode.N);
+        addKey(bottomRow, "M", KeyCode.M);
+        
+        addKey(spaceRow, "Space", KeyCode.SPACE);
+        
+        // make keys show
+        keyboard.getChildren().addAll(
+                topRow,
+                middleRow,
+                bottomRow,
+                spaceRow
+        );
+        
+        return keyboard;
     }
 
     public static void main(String[] args) {
