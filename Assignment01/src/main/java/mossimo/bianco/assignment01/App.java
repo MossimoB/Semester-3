@@ -190,6 +190,7 @@ public class App extends Application {
         addKey(topRow, "I", KeyCode.I);
         addKey(topRow, "O", KeyCode.O);
         addKey(topRow, "P", KeyCode.P);
+        addKey(topRow, "Backspace", KeyCode.BACK_SPACE);
         
         addKey(middleRow, "A", KeyCode.A);
         addKey(middleRow, "S", KeyCode.S);
@@ -234,7 +235,9 @@ public class App extends Application {
         Button button = new Button(text);
         
         // make space and shift wider
-        if (keyCode == KeyCode.SPACE) {
+        if (keyCode == KeyCode.BACK_SPACE) {
+            button.setPrefWidth(100);
+        } else if (keyCode == KeyCode.SPACE) {
             button.setPrefWidth(400);
         } else if (keyCode == KeyCode.SHIFT) {
             button.setPrefWidth(100);
@@ -296,6 +299,10 @@ public class App extends Application {
         if (virtualKey != null) {
             virtualKey.setStyle("");
         }
+        
+        if (keyCode == KeyCode.SHIFT) {
+            shiftPressed = false;
+        }
     }
     
     /**
@@ -341,6 +348,19 @@ public class App extends Application {
             }
             
             responseField.appendText(character);
+            
+            updateDisplay();
+        }
+    }
+    
+    private void handleBackspace() {
+        String currentResponse = responseField.getText();
+        
+        if (!currentResponse.isEmpty()) {
+            responseField.deleteText(
+                    currentResponse.length() - 1,
+                    currentResponse.length()
+            );
             
             updateDisplay();
         }
