@@ -2,6 +2,7 @@ package mossimo.bianco.assignment01;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,250 +16,417 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * INSTRUCTIONS
- * 
- * basically recreate monkeytype (kind of) in javafx
- * 
- * virtual keyboard using buttons (don't need all)
- * 
- * textfield to display text to type
- * textfield to display typed response (matched to physical keyboard)
- * 
- * need key_pressed/released (key inputs)
- * must show key being pressed/released when it is pressed/released (change opacity or background)
- * if user presses external key (not shown in window) then error message
- * 
- * next button to move to next displayed text
- * when pressed, show new text, clear user text field, show 2 of counter
- * 
- * reset button to return to input 1 of 6
- * method to track correct/incorrect keystrokes
- * 
- * allow backspace
- * 
- */
-
-/**
- * SAMPLE TEXT FOR TESTING
- * 
- * Try typing this text. Do it as quickly and as accurately as you can.
- * 
- * Next type another line of input data.
- * 
- * The quick brown fox jumps over the lazy dog.
- * 
- * Five big quacking zephyrs jolt my wax bed.
- * 
- * Sympathizing would fix Quaker objectives.
- * 
- * A large fawn jumped quickly over the white zinc boxes.
- * 
- */
-
-
-/**
- * JavaFX App
+ * Typing Tutor
+ *
+ * A simple typing tutor application with:
+ * - Virtual keyboard
+ * - Physical keyboard input
+ * - Shift support
+ * - Backspace support
+ * - Correct/incorrect keystroke tracking
+ * - Accuracy tracking
+ * - Next and Reset controls
  */
 public class App extends Application {
-        // the texts in an array
-        private final String[] texts = {
-            "Try typing this text. Do it as quickly and as accurately as you can.",
-            "Next type another line of input data.",
-            "The quick brown fox jumps over the lazy dog.",
-            "Five big quacking zephyrs jolt my wax bed.",
-            "Sympathizing would fix Quaker objectives.",
-            "A large fawn jumped quickly over the white zinc boxes."
-        };
-        
-        // current excercise
-        private int currentTextIndex = 0;
-        
-        // accuracy
-        private int correctKeyStrokes = 0;
-        private int incorrectKeyStrokes = 0;
-        
-        // UI
-        private Label expectedTextLabel;
-        private TextField responseField;
-        private Label progressLabel;
-        private Label pressedKeyLabel;
-        private Label correctLabel;
-        private Label incorrectLabel;
-        private Label accuracyLabel;
-        private Label statusLabel;
-        private Button nextButton;
-        private Button resetButton;
-        
-        // virtaul key matches keyboard key
-        private final Map<KeyCode, Button> virtualKeys = new HashMap();
-        
-        // shift key
-        private boolean shiftPressed = false;
-        
+
+    // Sample typing exercises
+    private final String[] texts = {
+        "Try typing this text. Do it as quickly and as accurately as you can.",
+        "Next type another line of input data.",
+        "The quick brown fox jumps over the lazy dog.",
+        "Five big quacking zephyrs jolt my wax bed.",
+        "Sympathizing would fix Quaker objectives.",
+        "A large fawn jumped quickly over the white zinc boxes."
+    };
+
+    // Current exercise
+    private int currentTextIndex = 0;
+
+    // Accuracy tracking
+    private int correctKeyStrokes = 0;
+    private int incorrectKeyStrokes = 0;
+
+    // UI
+    private Label expectedTextLabel;
+    private TextField responseField;
+    private Label progressLabel;
+    private Label pressedKeyLabel;
+    private Label correctLabel;
+    private Label incorrectLabel;
+    private Label accuracyLabel;
+    private Label statusLabel;
+    private Button nextButton;
+    private Button resetButton;
+
+    // Virtual keyboard
+    private final Map<KeyCode, Button> virtualKeys = new HashMap<>();
+
+    // Shift state
+    private boolean shiftPressed = false;
+
+    // Accent colour
+    private static final String ACCENT_COLOR = "#7CFF6B";
+
     @Override
     public void start(Stage stage) {
-        // UI
+
+        // ---------------------------------------------------------
+        // EXPECTED TEXT
+        // ---------------------------------------------------------
+
         expectedTextLabel = new Label();
+
+        expectedTextLabel.setWrapText(true);
+        expectedTextLabel.setMaxWidth(1050);
+
         expectedTextLabel.setStyle(
-            "-fx-font-size: 24px; " +
+            "-fx-font-size: 25px; " +
             "-fx-font-weight: bold; " +
-            "-fx-text-fill: white;"        
+            "-fx-text-fill: #F5F5F5;"
         );
-        
-        // fix auto focus
+
+
+        // ---------------------------------------------------------
+        // RESPONSE FIELD
+        // ---------------------------------------------------------
+
         responseField = new TextField();
+
         responseField.setEditable(false);
         responseField.setFocusTraversable(false);
+
+        responseField.setPrefWidth(900);
+        responseField.setPrefHeight(52);
+
         responseField.setStyle(
-            "-fx-font-size: 20px; " +
+            "-fx-font-size: 19px; " +
             "-fx-text-fill: #181818; " +
-            "-fx-padding: 10px 15px; " +
+            "-fx-padding: 8px 16px; " +
             "-fx-background-color: white; " +
             "-fx-border-color: white; " +
             "-fx-border-radius: 10px; " +
             "-fx-background-radius: 10px;"
         );
-        
+
+
+        // ---------------------------------------------------------
+        // PROGRESS
+        // ---------------------------------------------------------
+
         progressLabel = new Label();
+
         progressLabel.setStyle(
-            "-fx-font-size: 14px; " +
-            "-fx-text-fill: #8a8a8a;"        
+            "-fx-font-size: 13px; " +
+            "-fx-font-weight: bold; " +
+            "-fx-text-fill: #858585;"
         );
-        
-        pressedKeyLabel = new Label();
+
+
+        // ---------------------------------------------------------
+        // LAST KEY
+        // ---------------------------------------------------------
+
+        pressedKeyLabel = new Label("Last key pressed: ");
+
         pressedKeyLabel.setStyle(
             "-fx-font-size: 14px; " +
-            "-fx-text-fill: white;"        
+            "-fx-text-fill: #FFFFFF;"
         );
-                
+
+
+        // ---------------------------------------------------------
+        // STATISTICS
+        // ---------------------------------------------------------
+
         correctLabel = new Label();
+
         correctLabel.setStyle(
             "-fx-font-size: 14px; " +
-            "-fx-text-fill: white;"        
+            "-fx-text-fill: #FFFFFF;"
         );
-        
+
+
         incorrectLabel = new Label();
+
         incorrectLabel.setStyle(
             "-fx-font-size: 14px; " +
-            "-fx-text-fill: white;"        
+            "-fx-text-fill: #FFFFFF;"
         );
-        
+
+
         accuracyLabel = new Label();
+
         accuracyLabel.setStyle(
             "-fx-font-size: 14px; " +
-            "-fx-text-fill: white;"        
+            "-fx-text-fill: #FFFFFF;"
         );
-        
+
+
+        HBox statistics = new HBox(35);
+
+        statistics.setAlignment(Pos.CENTER);
+
+        statistics.getChildren().addAll(
+            correctLabel,
+            incorrectLabel,
+            accuracyLabel
+        );
+
+
+        // ---------------------------------------------------------
+        // STATUS
+        // ---------------------------------------------------------
+
         statusLabel = new Label();
+
         statusLabel.setStyle(
             "-fx-font-size: 14px; " +
-            "-fx-text-fill: white;"        
+            "-fx-font-weight: bold; " +
+            "-fx-text-fill: " + ACCENT_COLOR + ";"
         );
-        
-        // next and reset buttons
+
+
+        // ---------------------------------------------------------
+        // NEXT BUTTON
+        // ---------------------------------------------------------
+
         nextButton = new Button("Next");
-        resetButton = new Button("Reset");
-        
+
         nextButton.setFocusTraversable(false);
-        resetButton.setFocusTraversable(false);
-        
+
+        nextButton.setPrefWidth(105);
+        nextButton.setPrefHeight(38);
+
+        nextButton.setStyle(
+            "-fx-background-color: " + ACCENT_COLOR + "; " +
+            "-fx-text-fill: #181818; " +
+            "-fx-font-size: 14px; " +
+            "-fx-font-weight: bold; " +
+            "-fx-background-radius: 8px; " +
+            "-fx-cursor: hand;"
+        );
+
         nextButton.setOnAction(e -> nextText());
+
+
+        // ---------------------------------------------------------
+        // RESET BUTTON
+        // ---------------------------------------------------------
+
+        resetButton = new Button("Reset");
+
+        resetButton.setFocusTraversable(false);
+
+        resetButton.setPrefWidth(105);
+        resetButton.setPrefHeight(38);
+
+        resetButton.setStyle(
+            "-fx-background-color: #2A2A2A; " +
+            "-fx-text-fill: #FFFFFF; " +
+            "-fx-font-size: 14px; " +
+            "-fx-font-weight: bold; " +
+            "-fx-border-color: #444444; " +
+            "-fx-border-width: 1px; " +
+            "-fx-border-radius: 8px; " +
+            "-fx-background-radius: 8px; " +
+            "-fx-cursor: hand;"
+        );
+
         resetButton.setOnAction(e -> reset());
-        
-        // first excercise
+
+
+        // ---------------------------------------------------------
+        // CONTROLS
+        // ---------------------------------------------------------
+
+        HBox controls = new HBox(10);
+
+        controls.setAlignment(Pos.CENTER);
+
+        controls.getChildren().addAll(
+            nextButton,
+            resetButton
+        );
+
+
+        // ---------------------------------------------------------
+        // INITIAL DISPLAY
+        // ---------------------------------------------------------
+
         updateDisplay();
-        
-        // main scene
-        VBox root = new VBox(15);
-        root.setPadding(new Insets(30));
+
+
+        // ---------------------------------------------------------
+        // MAIN LAYOUT
+        // ---------------------------------------------------------
+
+        VBox root = new VBox(14);
+
+        root.setPadding(new Insets(25, 35, 25, 35));
         root.setAlignment(Pos.TOP_CENTER);
         root.setStyle("-fx-background-color: #181818;");
         root.setFocusTraversable(true);
-        
-        // add components
-        root.getChildren().addAll(
-                expectedTextLabel,
-                responseField,
-                progressLabel,
-                pressedKeyLabel,
-                correctLabel,
-                incorrectLabel,
-                accuracyLabel,
-                statusLabel,
-                nextButton,
-                resetButton,
-                
-                createKeyboard()
+
+
+        // Typing area
+        VBox typingArea = new VBox(10);
+
+        typingArea.setAlignment(Pos.CENTER);
+
+        typingArea.getChildren().addAll(
+            expectedTextLabel,
+            responseField,
+            progressLabel
         );
-        
+
+
+        // Add everything
+        root.getChildren().addAll(
+            typingArea,
+            statistics,
+            pressedKeyLabel,
+            statusLabel,
+            controls,
+            createKeyboard()
+        );
+
+
+        // ---------------------------------------------------------
+        // SCENE
+        // ---------------------------------------------------------
+
         Scene scene = new Scene(root, 1200, 600);
-        
+
+
+        // Physical keyboard - key pressed
         scene.setOnKeyPressed(e -> {
             handleKeyPressed(e.getCode());
         });
-        
+
+
+        // Physical keyboard - key released
         scene.setOnKeyReleased(e -> {
             handleKeyReleased(e.getCode());
         });
 
+
+        // ---------------------------------------------------------
+        // WINDOW
+        // ---------------------------------------------------------
+
         stage.setTitle("Typing Tutor");
         stage.setScene(scene);
+        stage.setResizable(false);
+
         stage.show();
+
+        // Make sure the application receives keyboard input
         root.requestFocus();
     }
-    
+
+
     /**
-     * Updates the information displayed by the application
+     * Updates all information displayed by the application.
      */
     private void updateDisplay() {
-        expectedTextLabel.setText(texts[currentTextIndex]);
-        
-        progressLabel.setText(
-                (currentTextIndex + 1) + " of " + texts.length
+
+        expectedTextLabel.setText(
+            texts[currentTextIndex]
         );
-        
-        correctLabel.setText("Correct: " + correctKeyStrokes);
-        incorrectLabel.setText("Incorrect: " + incorrectKeyStrokes);
-        
-        int totalKeyStrokes = correctKeyStrokes + incorrectKeyStrokes;
-        
+
+
+        progressLabel.setText(
+            (currentTextIndex + 1) + " of " + texts.length
+        );
+
+
+        correctLabel.setText(
+            "Correct: " + correctKeyStrokes
+        );
+
+
+        incorrectLabel.setText(
+            "Incorrect: " + incorrectKeyStrokes
+        );
+
+
+        int totalKeyStrokes =
+            correctKeyStrokes + incorrectKeyStrokes;
+
+
         if (totalKeyStrokes == 0) {
-            accuracyLabel.setText("Accuracy: 0%");
+
+            accuracyLabel.setText(
+                "Accuracy: 0%"
+            );
+
         } else {
-            double accuracy = (double) correctKeyStrokes / totalKeyStrokes * 100;
-            accuracyLabel.setText(String.format("Accuracy: %.1f%%", accuracy));
+
+            double accuracy =
+                (double) correctKeyStrokes
+                / totalKeyStrokes
+                * 100;
+
+            accuracyLabel.setText(
+                String.format(
+                    "Accuracy: %.1f%%",
+                    accuracy
+                )
+            );
         }
-        
-        if (responseField.getText().length() == texts[currentTextIndex].length()) {
+
+
+        // Completion indicator
+        if (
+            responseField.getText().length()
+            == texts[currentTextIndex].length()
+        ) {
+
             statusLabel.setText("Complete!");
+
         } else {
+
             statusLabel.setText("");
         }
     }
-        
+
+
     /**
-     * Creates the virtual keyboard
-     * 
+     * Creates the virtual keyboard.
+     *
      * @return the virtual keyboard layout
      */
     private VBox createKeyboard() {
-        // making the keyboard
-        VBox keyboard = new VBox(5);
+
+        VBox keyboard = new VBox(6);
+
         keyboard.setAlignment(Pos.CENTER);
-        
-        HBox topRow = new HBox(5);
+
+
+        HBox topRow = new HBox(6);
+
         topRow.setAlignment(Pos.CENTER);
-        
-        HBox bottomRow = new HBox(5);
-        bottomRow.setAlignment(Pos.CENTER);
-        
-        HBox middleRow = new HBox(5);
+
+
+        HBox middleRow = new HBox(6);
+
         middleRow.setAlignment(Pos.CENTER);
-        
-        HBox spaceRow = new HBox(5);
+
+
+        HBox bottomRow = new HBox(6);
+
+        bottomRow.setAlignment(Pos.CENTER);
+
+
+        HBox spaceRow = new HBox(6);
+
         spaceRow.setAlignment(Pos.CENTER);
-        
-        // adding all keys
+
+
+        // ---------------------------------------------------------
+        // TOP ROW
+        // ---------------------------------------------------------
+
         addKey(topRow, "Q", KeyCode.Q);
         addKey(topRow, "W", KeyCode.W);
         addKey(topRow, "E", KeyCode.E);
@@ -270,7 +438,12 @@ public class App extends Application {
         addKey(topRow, "O", KeyCode.O);
         addKey(topRow, "P", KeyCode.P);
         addKey(topRow, "Backspace", KeyCode.BACK_SPACE);
-        
+
+
+        // ---------------------------------------------------------
+        // MIDDLE ROW
+        // ---------------------------------------------------------
+
         addKey(middleRow, "A", KeyCode.A);
         addKey(middleRow, "S", KeyCode.S);
         addKey(middleRow, "D", KeyCode.D);
@@ -280,7 +453,12 @@ public class App extends Application {
         addKey(middleRow, "J", KeyCode.J);
         addKey(middleRow, "K", KeyCode.K);
         addKey(middleRow, "L", KeyCode.L);
-        
+
+
+        // ---------------------------------------------------------
+        // BOTTOM ROW
+        // ---------------------------------------------------------
+
         addKey(bottomRow, "Shift", KeyCode.SHIFT);
         addKey(bottomRow, "Z", KeyCode.Z);
         addKey(bottomRow, "X", KeyCode.X);
@@ -290,181 +468,294 @@ public class App extends Application {
         addKey(bottomRow, "N", KeyCode.N);
         addKey(bottomRow, "M", KeyCode.M);
         addKey(bottomRow, ".", KeyCode.PERIOD);
-        
+
+
+        // ---------------------------------------------------------
+        // SPACE
+        // ---------------------------------------------------------
+
         addKey(spaceRow, "Space", KeyCode.SPACE);
-        
-        // make keys show
+
+
         keyboard.getChildren().addAll(
-                topRow,
-                middleRow,
-                bottomRow,
-                spaceRow
+            topRow,
+            middleRow,
+            bottomRow,
+            spaceRow
         );
-        
+
+
         return keyboard;
     }
-    
+
+
     /**
-     * Creates a virtual keyboard button and adds it to a keyboard row
-     * 
-     * @param row the row where the button should be placed
-     * @param text the text displayed on the button
-     * @param KeyCode the physical keyboard key represented by the button
+     * Creates a virtual keyboard button.
+     *
+     * @param row the row where the key belongs
+     * @param text the text displayed on the key
+     * @param keyCode the physical key represented
      */
-    private void addKey(HBox row, String text, KeyCode keyCode) {
+    private void addKey(
+        HBox row,
+        String text,
+        KeyCode keyCode
+    ) {
+
         Button button = new Button(text);
-        
-        // make space and shift wider
+
+
+        // ---------------------------------------------------------
+        // KEY SIZE
+        // ---------------------------------------------------------
+
         if (keyCode == KeyCode.BACK_SPACE) {
+
             button.setPrefWidth(100);
+
         } else if (keyCode == KeyCode.SPACE) {
+
             button.setPrefWidth(400);
+
         } else if (keyCode == KeyCode.SHIFT) {
+
             button.setPrefWidth(100);
+
         } else {
+
             button.setPrefWidth(50);
         }
-        
+
+
+        button.setPrefHeight(42);
+
+        button.setMinHeight(42);
+        button.setMaxHeight(42);
+
         button.setFocusTraversable(false);
-        button.setPrefHeight(45);
-        
+
+
+        // ---------------------------------------------------------
+        // NORMAL KEY STYLE
+        // ---------------------------------------------------------
+
+        button.setStyle(
+            "-fx-background-color: #F2F2F2; " +
+            "-fx-text-fill: #181818; " +
+            "-fx-font-size: 13px; " +
+            "-fx-font-weight: bold; " +
+            "-fx-background-radius: 7px; " +
+            "-fx-border-radius: 7px; " +
+            "-fx-border-color: #D6D6D6; " +
+            "-fx-border-width: 1px; " +
+            "-fx-cursor: hand;"
+        );
+
+        button.setOnMouseEntered(e -> {
+            if (!button.getStyle().contains("#555555")) {
+                button.setStyle(
+                    "-fx-background-color: #FFFFFF; " +
+                    "-fx-text-fill: #181818; " +
+                    "-fx-font-size: 13px; " +
+                    "-fx-font-weight: bold; " +
+                    "-fx-background-radius: 7px; " +
+                    "-fx-border-radius: 7px; " +
+                    "-fx-border-color: #FFFFFF; " +
+                    "-fx-border-width: 1px; " +
+                    "-fx-cursor: hand;"
+                );
+            }
+        });
+
+        button.setOnMouseExited(e -> {
+            if (!button.getStyle().contains("#555555")) {
+                button.setStyle(
+                    "-fx-background-color: #F2F2F2; " +
+                    "-fx-text-fill: #181818; " +
+                    "-fx-font-size: 13px; " +
+                    "-fx-font-weight: bold; " +
+                    "-fx-background-radius: 7px; " +
+                    "-fx-border-radius: 7px; " +
+                    "-fx-border-color: #D6D6D6; " +
+                    "-fx-border-width: 1px; " +
+                    "-fx-cursor: hand;"
+                );
+            }
+        });
+
         virtualKeys.put(keyCode, button);
-        
+
         row.getChildren().add(button);
     }
-    
+
     /**
-     * Handles a key when it is pressed on the physical keyboard
-     * 
-     * @param keyCode the key that was released
+     * Handles a physical key press.
+     *
+     * @param keyCode the key pressed
      */
     private void handleKeyPressed(KeyCode keyCode) {
-        // enter
+        // ENTER = NEXT
         if (keyCode == KeyCode.ENTER) {
             nextText();
             return;
         }
-            
-        Button virtualKey = virtualKeys.get(keyCode);
         
+        Button virtualKey =
+            virtualKeys.get(keyCode);
+
         if (virtualKey != null) {
-            virtualKey.setStyle("-fx-background-color: #555555;"
-                    + "-fx-text-fill: white;");
-            
-            pressedKeyLabel.setText("Last key pressed: " + keyCode);
-            pressedKeyLabel.setStyle("-fx-font-size: 14px; "
-                    + "-fx-text-fill: white;");
-            
-            // shift
+            // Highlight pressed key
+            virtualKey.setStyle(
+                "-fx-background-color: " + ACCENT_COLOR + "; " +
+                "-fx-text-fill: #181818; " +
+                "-fx-font-size: 13px; " +
+                "-fx-font-weight: bold; " +
+                "-fx-background-radius: 7px; " +
+                "-fx-border-radius: 7px; " +
+                "-fx-border-color: " + ACCENT_COLOR + "; " +
+                "-fx-border-width: 1px;"
+            );
+
+            pressedKeyLabel.setText(
+                "Last key pressed: " + keyCode
+            );
+
+            pressedKeyLabel.setStyle(
+                "-fx-font-size: 14px; " +
+                "-fx-text-fill: #FFFFFF;"
+            );
+
+            // SHIFT
             if (keyCode == KeyCode.SHIFT) {
                 shiftPressed = true;
                 return;
             }
-            
-            // backspace
+
+            // BACKSPACE
             if (keyCode == KeyCode.BACK_SPACE) {
                 handleBackspace();
                 return;
             }
-            
-            String character = getCharacter(keyCode);
-            
+
+            String character =
+                getCharacter(keyCode);
+
             if (character != null) {
                 addCharacter(character);
             }
-            
         } else {
-            pressedKeyLabel.setText("Key not handled!");
-            pressedKeyLabel.setStyle("-fx-text-fill: red; " 
-                    + "-fx-font-size: 14px;");
+            // Unsupported key
+            pressedKeyLabel.setText(
+                "Key not handled!"
+            );
+
+            pressedKeyLabel.setStyle(
+                "-fx-text-fill: red; " +
+                "-fx-font-size: 14px;"
+            );
         }
     }
-    
+
     /**
-     * Handles a key when it is released on the physical keyboard
-     * 
-     * @param keyCode the key that was released
+     * Handles a physical key release.
+     *
+     * @param keyCode the key released
      */
     private void handleKeyReleased(KeyCode keyCode) {
-        Button virtualKey = virtualKeys.get(keyCode);
-        
+        Button virtualKey =
+            virtualKeys.get(keyCode);
+
         if (virtualKey != null) {
-            virtualKey.setStyle("");
+            virtualKey.setStyle(
+                "-fx-background-color: #F2F2F2; " +
+                "-fx-text-fill: #181818; " +
+                "-fx-font-size: 13px; " +
+                "-fx-font-weight: bold; " +
+                "-fx-background-radius: 7px; " +
+                "-fx-border-radius: 7px; " +
+                "-fx-border-color: #D6D6D6; " +
+                "-fx-border-width: 1px; " +
+                "-fx-cursor: hand;"
+            );
         }
-        
+
         if (keyCode == KeyCode.SHIFT) {
             shiftPressed = false;
         }
     }
-    
+
     /**
-     * Converts a physical keyboard key into the character it represents
-     * 
+     * Converts a physical key into a character.
+     *
      * @param keyCode the physical keyboard key
-     * @return the right character or null if not a character
+     * @return the corresponding character
      */
     private String getCharacter(KeyCode keyCode) {
         if (keyCode == KeyCode.SPACE) {
             return " ";
         }
-        
+
         if (keyCode == KeyCode.PERIOD) {
             return ".";
         }
-        
+
         if (keyCode.isLetterKey()) {
-            String character = keyCode.toString().toLowerCase();
-            
+            String character =
+                keyCode.toString().toLowerCase();
             if (shiftPressed) {
                 return character.toUpperCase();
             }
-            
+
             return character;
         }
-        
+
         return null;
     }
-    
+
     /**
      * Adds a character to the response field and checks accuracy
-     * 
-     * @param keyCode the character types by user
+     *
+     * @param character the character typed
      */
     private void addCharacter(String character) {
-        String currentResponse = responseField.getText();
-        int position = currentResponse.length();
-        
+        String currentResponse =
+            responseField.getText();
+
+        int position =
+            currentResponse.length();
+
         if (position < texts[currentTextIndex].length()) {
-            char expectedCharacter = texts[currentTextIndex].charAt(position);
-            
+            char expectedCharacter =
+                texts[currentTextIndex].charAt(position);
             if (character.charAt(0) == expectedCharacter) {
                 correctKeyStrokes++;
             } else {
                 incorrectKeyStrokes++;
             }
-            
+
             responseField.appendText(character);
-            
+
             updateDisplay();
         }
     }
-    
+
     /**
-     * Removes the last character from user's answer
+     * Removes the last character from the response
      */
     private void handleBackspace() {
-        String currentResponse = responseField.getText();
-        
+        String currentResponse =
+            responseField.getText();
+
         if (!currentResponse.isEmpty()) {
             responseField.deleteText(
-                    currentResponse.length() - 1,
-                    currentResponse.length()
+                currentResponse.length() - 1,
+                currentResponse.length()
             );
-            
+
             updateDisplay();
         }
     }
-    
+
     /**
      * Moves to the next exercise
      */
@@ -474,46 +765,66 @@ public class App extends Application {
         } else {
             currentTextIndex = 0;
         }
-        
+
         responseField.clear();
-        
+
         correctKeyStrokes = 0;
         incorrectKeyStrokes = 0;
-        
-        pressedKeyLabel.setText("Last key pressed: ");
-        pressedKeyLabel.setStyle("-fx-font-size: 14px; "
-                    + "-fx-text-fill: white;");
-        
+
+
+        pressedKeyLabel.setText(
+            "Last key pressed: "
+        );
+
+        pressedKeyLabel.setStyle(
+            "-fx-font-size: 14px; " +
+            "-fx-text-fill: #FFFFFF;"
+        );
+
         shiftPressed = false;
-        
+
         updateDisplay();
-        
+
         requestKeyboardFocus();
     }
-    
-    private void reset() {
-        currentTextIndex = 0;
-        
-        correctKeyStrokes = 0;
-        incorrectKeyStrokes = 0;
-        
-        responseField.clear();
-        
-        pressedKeyLabel.setText("Last key pressed: ");
-        pressedKeyLabel.setStyle("");
-        
-        shiftPressed = false;
-        
-        updateDisplay();
-        
-        requestKeyboardFocus();
-    }
-    
+
     /**
-     * Returns keyboard focus to the main application
+     * Resets the application to the first exercise.
+     */
+    private void reset() {
+
+        currentTextIndex = 0;
+
+        correctKeyStrokes = 0;
+        incorrectKeyStrokes = 0;
+
+        responseField.clear();
+
+
+        pressedKeyLabel.setText(
+            "Last key pressed: "
+        );
+
+        pressedKeyLabel.setStyle(
+            "-fx-font-size: 14px; " +
+            "-fx-text-fill: #FFFFFF;"
+        );
+
+        shiftPressed = false;
+
+        updateDisplay();
+
+        requestKeyboardFocus();
+    }
+
+    /**
+     * Returns keyboard focus to the application.
      */
     private void requestKeyboardFocus() {
-        expectedTextLabel.getScene().getRoot().requestFocus();
+        expectedTextLabel
+            .getScene()
+            .getRoot()
+            .requestFocus();
     }
 
     public static void main(String[] args) {
