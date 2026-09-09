@@ -88,6 +88,9 @@ public class App extends Application {
         // virtaul key matches keyboard key
         private final Map<KeyCode, Button> virtualKeys = new HashMap();
         
+        // shift key
+        private boolean shiftPressed = false;
+        
     @Override
     public void start(Stage stage) {
         // UI
@@ -256,6 +259,29 @@ public class App extends Application {
         
         if (virtualKey != null) {
             virtualKey.setStyle("-fx-background-color: lightgray;");
+            
+            pressedKeyLabel.setText("Last key pressed: " + keyCode);
+            pressedKeyLabel.setStyle("");
+            
+            if (keyCode == KeyCode.SHIFT) {
+                shiftPressed = true;
+                return;
+            }
+            
+            if (keyCode == KeyCode.BACK_SPACE) {
+                handleBackspace();
+                return;
+            }
+            
+            String character = getCharacter(keyCode);
+            
+            if (character != null) {
+                addCharacter(character);
+            }
+            
+        } else {
+            pressedKeyLabel.setText("Not handled.");
+            pressedKeyLabel.setStyle("-fx-text-fill: red;");
         }
     }
     
@@ -269,6 +295,54 @@ public class App extends Application {
         
         if (virtualKey != null) {
             virtualKey.setStyle("");
+        }
+    }
+    
+    /**
+     * Converts a physical keyboard key into the character it represents
+     * 
+     * @param keyCode the physical keyboard key
+     * @return the right character or null if not a character
+     */
+    private String getCharacter(KeyCode keyCode) {
+        if (keyCode == KeyCode.SPACE) {
+            return " ";
+        }
+        
+        if (keyCode.isLetterKey()) {
+            String character = keyCode.toString().toLowerCase();
+            
+            if (shiftPressed) {
+                return character.toUpperCase();
+            }
+            
+            return character;
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Adds a character to the response field and checks accuracy
+     * 
+     * @param keyCode the character types by user
+     */
+    private void addCharacter(String character) {
+        String currentResponse = responseField.getText();
+        int position = currentResponse.length();
+        
+        if (position < texts[currentTextIndex].length()) {
+            char expectedCharacter = texts[currentTextIndex].charAt(position);
+            
+            if (character.charAt(0) == expectedCharacter) {
+                correctKeyStrokes++;
+            } else {
+                incorrectKeyStrokes++;
+            }
+            
+            responseField.appendText(character);
+            
+            updateDisplay();
         }
     }
 
