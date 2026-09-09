@@ -84,6 +84,7 @@ public class App extends Application {
         private Label pressedKeyLabel;
         private Label correctLabel;
         private Label incorrectLabel;
+        private Label accuracyLabel;
         private Button nextButton;
         private Button resetButton;
         
@@ -107,6 +108,7 @@ public class App extends Application {
         pressedKeyLabel = new Label();
         correctLabel = new Label();
         incorrectLabel = new Label();
+        accuracyLabel = new Label();
         
         // next and reset buttons
         nextButton = new Button("Next");
@@ -135,6 +137,7 @@ public class App extends Application {
                 pressedKeyLabel,
                 correctLabel,
                 incorrectLabel,
+                accuracyLabel,
                 nextButton,
                 resetButton,
                 
@@ -169,13 +172,17 @@ public class App extends Application {
         
         pressedKeyLabel.setText("Last key pressed: ");
         
-        correctLabel.setText(
-                "Correct: " + correctKeyStrokes
-        );
+        correctLabel.setText("Correct: " + correctKeyStrokes);
+        incorrectLabel.setText("Incorrect: " + incorrectKeyStrokes);
         
-        incorrectLabel.setText(
-                "Incorrect: " + incorrectKeyStrokes
-        );
+        int totalKeyStrokes = correctKeyStrokes + incorrectKeyStrokes;
+        
+        if (totalKeyStrokes == 0) {
+            accuracyLabel.setText("Accuracy: 0%");
+        } else {
+            double accuracy = (double) correctKeyStrokes / totalKeyStrokes * 100;
+            accuracyLabel.setText(String.format("Accuracy: %.1f%%", accuracy));
+        }
     }
         
     /**
@@ -281,6 +288,12 @@ public class App extends Application {
      * @param keyCode the key that was released
      */
     private void handleKeyPressed(KeyCode keyCode) {
+        // enter
+        if (keyCode == KeyCode.ENTER) {
+            nextText();
+            return;
+        }
+            
         Button virtualKey = virtualKeys.get(keyCode);
         
         if (virtualKey != null) {
@@ -289,11 +302,13 @@ public class App extends Application {
             pressedKeyLabel.setText("Last key pressed: " + keyCode);
             pressedKeyLabel.setStyle("");
             
+            // shift
             if (keyCode == KeyCode.SHIFT) {
                 shiftPressed = true;
                 return;
             }
             
+            // backspace
             if (keyCode == KeyCode.BACK_SPACE) {
                 handleBackspace();
                 return;
