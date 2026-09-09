@@ -125,7 +125,10 @@ public class App extends Application {
         stage.show();
     }
     
-        private void updateDisplay() {
+    /**
+     * Updates the information displayed by the application
+     */
+    private void updateDisplay() {
         expectedTextLabel.setText(texts[currentTextIndex]);
         
         progressLabel.setText(
@@ -143,6 +146,11 @@ public class App extends Application {
         );
     }
         
+    /**
+     * Creates the virtual keyboard
+     * 
+     * @return the virtual keyboard layout
+     */
     private VBox createKeyboard() {
         // making the keyboard
         VBox keyboard = new VBox(5);
@@ -201,6 +209,24 @@ public class App extends Application {
         );
         
         return keyboard;
+    }
+    
+    /**
+     * Creates a virtual keyboard button and adds it to a keyboard row
+     * 
+     * @param row the row where the button should be placed
+     * @param text the text displayed on the button
+     * @param KeyCode the physical keyboard key represented by the button
+     */
+    private void addKey(HBox row, String text, KeyCode keyCode) {
+        Button button = new Button(text);
+        
+        button.setPrefWidth(50);
+        button.setPrefHeight(45);
+        
+        virtualKeys.put(keyCode, button);
+        
+        row.getChildren().add(button);
     }
 
     public static void main(String[] args) {
