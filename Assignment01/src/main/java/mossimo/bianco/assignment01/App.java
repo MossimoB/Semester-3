@@ -1,11 +1,16 @@
 package mossimo.bianco.assignment01;
 
+import java.util.HashMap;
+import java.util.Map;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -14,7 +19,7 @@ import javafx.stage.Stage;
  * 
  * basically recreate monkeytype (kind of) in javafx
  * 
- * virtual keyboard using buttons (don't need all, but i will do all)
+ * virtual keyboard using buttons (don't need all)
  * 
  * textfield to display text to type
  * textfield to display typed response (matched to physical keyboard)
@@ -80,6 +85,8 @@ public class App extends Application {
         private Label correctLabel;
         private Label incorrectLabel;
         
+        // virtaul key matches keyboard key
+        private final Map<KeyCode, Button> virtualKeys = new HashMap();
         
     @Override
     public void start(Stage stage) {
@@ -106,7 +113,9 @@ public class App extends Application {
                 progressLabel,
                 pressedKeyLabel,
                 correctLabel,
-                incorrectLabel
+                incorrectLabel,
+                
+                createKeyboard()
         );
         
         Scene scene = new Scene(root, 1200, 600);
@@ -132,6 +141,23 @@ public class App extends Application {
         incorrectLabel.setText(
                 "Incorrect: " + incorrectKeyStrokes
         );
+    }
+        
+    private VBox createKeyboard() {
+        VBox keyboard = new VBox(5);
+        keyboard.setAlignment(Pos.CENTER);
+        
+        HBox topRow = new HBox(5);
+        topRow.setAlignment(Pos.CENTER);
+        
+        HBox bottomRow = new HBox(5);
+        bottomRow.setAlignment(Pos.CENTER);
+        
+        HBox middleRow = new HBox(5);
+        middleRow.setAlignment(Pos.CENTER);
+        
+        HBox spaceRow = new HBox(5);
+        spaceRow.setAlignment(Pos.CENTER);
     }
 
     public static void main(String[] args) {
