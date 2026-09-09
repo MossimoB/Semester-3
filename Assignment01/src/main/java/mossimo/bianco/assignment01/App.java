@@ -99,18 +99,61 @@ public class App extends Application {
     public void start(Stage stage) {
         // UI
         expectedTextLabel = new Label();
+        expectedTextLabel.setStyle(
+            "-fx-font-size: 24px; " +
+            "-fx-font-weight: bold; " +
+            "-fx-text-fill: white;"        
+        );
         
-        // had to fix auto focus
+        // fix auto focus
         responseField = new TextField();
         responseField.setEditable(false);
         responseField.setFocusTraversable(false);
+        responseField.setStyle(
+            "-fx-font-size: 20px; " +
+            "-fx-text-fill: #181818; " +
+            "-fx-padding: 10px 15px; " +
+            "-fx-background-color: white; " +
+            "-fx-border-color: white; " +
+            "-fx-border-radius: 10px; " +
+            "-fx-background-radius: 10px;"
+        );
         
         progressLabel = new Label();
+        progressLabel.setStyle(
+            "-fx-font-size: 14px; " +
+            "-fx-text-fill: #8a8a8a;"        
+        );
+        
         pressedKeyLabel = new Label();
+        pressedKeyLabel.setStyle(
+            "-fx-font-size: 14px; " +
+            "-fx-text-fill: white;"        
+        );
+                
         correctLabel = new Label();
+        correctLabel.setStyle(
+            "-fx-font-size: 14px; " +
+            "-fx-text-fill: white;"        
+        );
+        
         incorrectLabel = new Label();
+        incorrectLabel.setStyle(
+            "-fx-font-size: 14px; " +
+            "-fx-text-fill: white;"        
+        );
+        
         accuracyLabel = new Label();
+        accuracyLabel.setStyle(
+            "-fx-font-size: 14px; " +
+            "-fx-text-fill: white;"        
+        );
+        
         statusLabel = new Label();
+        statusLabel.setStyle(
+            "-fx-font-size: 14px; " +
+            "-fx-text-fill: white;"        
+        );
         
         // next and reset buttons
         nextButton = new Button("Next");
@@ -126,9 +169,10 @@ public class App extends Application {
         updateDisplay();
         
         // main scene
-        VBox root = new VBox(10);
-        root.setPadding(new Insets(20));
+        VBox root = new VBox(15);
+        root.setPadding(new Insets(30));
         root.setAlignment(Pos.TOP_CENTER);
+        root.setStyle("-fx-background-color: #181818;");
         root.setFocusTraversable(true);
         
         // add components
@@ -172,8 +216,6 @@ public class App extends Application {
         progressLabel.setText(
                 (currentTextIndex + 1) + " of " + texts.length
         );
-        
-        pressedKeyLabel.setText("Last key pressed: ");
         
         correctLabel.setText("Correct: " + correctKeyStrokes);
         incorrectLabel.setText("Incorrect: " + incorrectKeyStrokes);
@@ -310,7 +352,8 @@ public class App extends Application {
                     + "-fx-text-fill: white;");
             
             pressedKeyLabel.setText("Last key pressed: " + keyCode);
-            pressedKeyLabel.setStyle("");
+            pressedKeyLabel.setStyle("-fx-font-size: 14px; "
+                    + "-fx-text-fill: white;");
             
             // shift
             if (keyCode == KeyCode.SHIFT) {
@@ -331,8 +374,9 @@ public class App extends Application {
             }
             
         } else {
-            pressedKeyLabel.setText("Not handled.");
-            pressedKeyLabel.setStyle("-fx-text-fill: red;");
+            pressedKeyLabel.setText("Key not handled!");
+            pressedKeyLabel.setStyle("-fx-text-fill: red; " 
+                    + "-fx-font-size: 14px;");
         }
     }
     
@@ -437,7 +481,8 @@ public class App extends Application {
         incorrectKeyStrokes = 0;
         
         pressedKeyLabel.setText("Last key pressed: ");
-        pressedKeyLabel.setStyle("");
+        pressedKeyLabel.setStyle("-fx-font-size: 14px; "
+                    + "-fx-text-fill: white;");
         
         shiftPressed = false;
         
