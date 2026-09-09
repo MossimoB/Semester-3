@@ -198,6 +198,7 @@ public class App extends Application {
         addKey(middleRow, "K", KeyCode.K);
         addKey(middleRow, "L", KeyCode.L);
         
+        addKey(bottomRow, "Shift", KeyCode.SHIFT);
         addKey(bottomRow, "Z", KeyCode.Z);
         addKey(bottomRow, "X", KeyCode.X);
         addKey(bottomRow, "C", KeyCode.C);
@@ -229,6 +230,7 @@ public class App extends Application {
     private void addKey(HBox row, String text, KeyCode keyCode) {
         Button button = new Button(text);
         
+        // make space and shift wider
         if (keyCode == KeyCode.SPACE) {
             button.setPrefWidth(400);
         } else if (keyCode == KeyCode.SHIFT) {
