@@ -95,7 +95,12 @@ public class App extends Application {
     public void start(Stage stage) {
         // UI
         expectedTextLabel = new Label();
+        
+        // had to fix auto focus
         responseField = new TextField();
+        responseField.setEditable(false);
+        responseField.setFocusTraversable(false);
+        
         progressLabel = new Label();
         pressedKeyLabel = new Label();
         correctLabel = new Label();
@@ -108,6 +113,7 @@ public class App extends Application {
         VBox root = new VBox(10);
         root.setPadding(new Insets(20));
         root.setAlignment(Pos.TOP_CENTER);
+        root.setFocusTraversable(true);
         
         // add components
         root.getChildren().addAll(
@@ -134,6 +140,7 @@ public class App extends Application {
         stage.setTitle("Typing Tutor");
         stage.setScene(scene);
         stage.show();
+        root.requestFocus();
     }
     
     /**
@@ -245,6 +252,7 @@ public class App extends Application {
             button.setPrefWidth(50);
         }
         
+        button.setFocusTraversable(false);
         button.setPrefHeight(45);
         
         virtualKeys.put(keyCode, button);
@@ -353,6 +361,9 @@ public class App extends Application {
         }
     }
     
+    /**
+     * Removes the last character from user's answer
+     */
     private void handleBackspace() {
         String currentResponse = responseField.getText();
         
