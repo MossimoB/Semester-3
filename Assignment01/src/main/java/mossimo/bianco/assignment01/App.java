@@ -229,7 +229,14 @@ public class App extends Application {
     private void addKey(HBox row, String text, KeyCode keyCode) {
         Button button = new Button(text);
         
-        button.setPrefWidth(50);
+        if (keyCode == KeyCode.SPACE) {
+            button.setPrefWidth(400);
+        } else if (keyCode == KeyCode.SHIFT) {
+            button.setPrefWidth(100);
+        } else {
+            button.setPrefWidth(50);
+        }
+        
         button.setPrefHeight(45);
         
         virtualKeys.put(keyCode, button);
@@ -237,6 +244,11 @@ public class App extends Application {
         row.getChildren().add(button);
     }
     
+    /**
+     * Handles a key when it is pressed on the physical keyboard
+     * 
+     * @param keyCode the key that was released
+     */
     private void handleKeyPressed(KeyCode keyCode) {
         Button virtualKey = virtualKeys.get(keyCode);
         
@@ -245,6 +257,11 @@ public class App extends Application {
         }
     }
     
+    /**
+     * Handles a key when it is released on the physical keyboard
+     * 
+     * @param keyCode the key that was released
+     */
     private void handleKeyReleased(KeyCode keyCode) {
         Button virtualKey = virtualKeys.get(keyCode);
         
