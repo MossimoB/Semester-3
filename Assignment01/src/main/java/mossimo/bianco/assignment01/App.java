@@ -28,7 +28,6 @@ import javafx.stage.Stage;
  * - Next and Reset controls
  */
 public class App extends Application {
-
     // Sample typing exercises
     private final String[] texts = {
         "Try typing this text. Do it as quickly and as accurately as you can.",
@@ -69,35 +68,20 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) {
-
-        // ---------------------------------------------------------
-        // EXPECTED TEXT
-        // ---------------------------------------------------------
-
         expectedTextLabel = new Label();
-
         expectedTextLabel.setWrapText(true);
         expectedTextLabel.setMaxWidth(1050);
-
         expectedTextLabel.setStyle(
             "-fx-font-size: 25px; " +
             "-fx-font-weight: bold; " +
             "-fx-text-fill: #F5F5F5;"
         );
 
-
-        // ---------------------------------------------------------
-        // RESPONSE FIELD
-        // ---------------------------------------------------------
-
         responseField = new TextField();
-
         responseField.setEditable(false);
         responseField.setFocusTraversable(false);
-
         responseField.setPrefWidth(900);
         responseField.setPrefHeight(52);
-
         responseField.setStyle(
             "-fx-font-size: 19px; " +
             "-fx-text-fill: #181818; " +
@@ -108,95 +92,56 @@ public class App extends Application {
             "-fx-background-radius: 10px;"
         );
 
-
-        // ---------------------------------------------------------
-        // PROGRESS
-        // ---------------------------------------------------------
-
         progressLabel = new Label();
-
         progressLabel.setStyle(
             "-fx-font-size: 13px; " +
             "-fx-font-weight: bold; " +
             "-fx-text-fill: #858585;"
         );
 
-
-        // ---------------------------------------------------------
-        // LAST KEY
-        // ---------------------------------------------------------
-
         pressedKeyLabel = new Label("Last key pressed: ");
-
         pressedKeyLabel.setStyle(
             "-fx-font-size: 14px; " +
             "-fx-text-fill: #FFFFFF;"
         );
 
-
-        // ---------------------------------------------------------
-        // STATISTICS
-        // ---------------------------------------------------------
-
         correctLabel = new Label();
-
         correctLabel.setStyle(
             "-fx-font-size: 14px; " +
             "-fx-text-fill: #FFFFFF;"
         );
 
-
         incorrectLabel = new Label();
-
         incorrectLabel.setStyle(
             "-fx-font-size: 14px; " +
             "-fx-text-fill: #FFFFFF;"
         );
 
-
         accuracyLabel = new Label();
-
         accuracyLabel.setStyle(
             "-fx-font-size: 14px; " +
             "-fx-text-fill: #FFFFFF;"
         );
 
-
         HBox statistics = new HBox(35);
-
         statistics.setAlignment(Pos.CENTER);
-
         statistics.getChildren().addAll(
             correctLabel,
             incorrectLabel,
             accuracyLabel
         );
-
-
-        // ---------------------------------------------------------
-        // STATUS
-        // ---------------------------------------------------------
-
+        
         statusLabel = new Label();
-
         statusLabel.setStyle(
             "-fx-font-size: 14px; " +
             "-fx-font-weight: bold; " +
             "-fx-text-fill: " + ACCENT_COLOR + ";"
         );
 
-
-        // ---------------------------------------------------------
-        // NEXT BUTTON
-        // ---------------------------------------------------------
-
         nextButton = new Button("Next");
-
         nextButton.setFocusTraversable(false);
-
         nextButton.setPrefWidth(105);
         nextButton.setPrefHeight(38);
-
         nextButton.setStyle(
             "-fx-background-color: " + ACCENT_COLOR + "; " +
             "-fx-text-fill: #181818; " +
@@ -205,21 +150,12 @@ public class App extends Application {
             "-fx-background-radius: 8px; " +
             "-fx-cursor: hand;"
         );
-
         nextButton.setOnAction(e -> nextText());
 
-
-        // ---------------------------------------------------------
-        // RESET BUTTON
-        // ---------------------------------------------------------
-
         resetButton = new Button("Reset");
-
         resetButton.setFocusTraversable(false);
-
         resetButton.setPrefWidth(105);
         resetButton.setPrefHeight(38);
-
         resetButton.setStyle(
             "-fx-background-color: #2A2A2A; " +
             "-fx-text-fill: #FFFFFF; " +
@@ -231,34 +167,17 @@ public class App extends Application {
             "-fx-background-radius: 8px; " +
             "-fx-cursor: hand;"
         );
-
         resetButton.setOnAction(e -> reset());
-
-
-        // ---------------------------------------------------------
-        // CONTROLS
-        // ---------------------------------------------------------
 
         HBox controls = new HBox(10);
 
         controls.setAlignment(Pos.CENTER);
-
         controls.getChildren().addAll(
             nextButton,
             resetButton
         );
 
-
-        // ---------------------------------------------------------
-        // INITIAL DISPLAY
-        // ---------------------------------------------------------
-
         updateDisplay();
-
-
-        // ---------------------------------------------------------
-        // MAIN LAYOUT
-        // ---------------------------------------------------------
 
         VBox root = new VBox(14);
 
@@ -267,19 +186,16 @@ public class App extends Application {
         root.setStyle("-fx-background-color: #181818;");
         root.setFocusTraversable(true);
 
-
         // Typing area
         VBox typingArea = new VBox(10);
 
         typingArea.setAlignment(Pos.CENTER);
-
         typingArea.getChildren().addAll(
             expectedTextLabel,
             responseField,
             progressLabel
         );
-
-
+        
         // Add everything
         root.getChildren().addAll(
             typingArea,
@@ -290,78 +206,54 @@ public class App extends Application {
             createKeyboard()
         );
 
-
-        // ---------------------------------------------------------
-        // SCENE
-        // ---------------------------------------------------------
-
         Scene scene = new Scene(root, 1200, 600);
-
 
         // Physical keyboard - key pressed
         scene.setOnKeyPressed(e -> {
             handleKeyPressed(e.getCode());
         });
 
-
         // Physical keyboard - key released
         scene.setOnKeyReleased(e -> {
             handleKeyReleased(e.getCode());
         });
 
-
-        // ---------------------------------------------------------
-        // WINDOW
-        // ---------------------------------------------------------
-
         stage.setTitle("Typing Tutor");
         stage.setScene(scene);
         stage.setResizable(false);
-
         stage.show();
-
         // Make sure the application receives keyboard input
         root.requestFocus();
     }
-
 
     /**
      * Updates all information displayed by the application.
      */
     private void updateDisplay() {
-
         expectedTextLabel.setText(
             texts[currentTextIndex]
         );
-
 
         progressLabel.setText(
             (currentTextIndex + 1) + " of " + texts.length
         );
 
-
         correctLabel.setText(
             "Correct: " + correctKeyStrokes
         );
-
 
         incorrectLabel.setText(
             "Incorrect: " + incorrectKeyStrokes
         );
 
-
         int totalKeyStrokes =
             correctKeyStrokes + incorrectKeyStrokes;
-
-
+        
         if (totalKeyStrokes == 0) {
-
             accuracyLabel.setText(
                 "Accuracy: 0%"
             );
-
         } else {
-
             double accuracy =
                 (double) correctKeyStrokes
                 / totalKeyStrokes
@@ -375,21 +267,16 @@ public class App extends Application {
             );
         }
 
-
         // Completion indicator
         if (
             responseField.getText().length()
             == texts[currentTextIndex].length()
         ) {
-
             statusLabel.setText("Complete!");
-
         } else {
-
             statusLabel.setText("");
         }
     }
-
 
     /**
      * Creates the virtual keyboard.
@@ -397,35 +284,20 @@ public class App extends Application {
      * @return the virtual keyboard layout
      */
     private VBox createKeyboard() {
-
         VBox keyboard = new VBox(6);
-
         keyboard.setAlignment(Pos.CENTER);
 
-
         HBox topRow = new HBox(6);
-
         topRow.setAlignment(Pos.CENTER);
-
-
+        
         HBox middleRow = new HBox(6);
-
         middleRow.setAlignment(Pos.CENTER);
 
-
         HBox bottomRow = new HBox(6);
-
         bottomRow.setAlignment(Pos.CENTER);
-
-
+        
         HBox spaceRow = new HBox(6);
-
         spaceRow.setAlignment(Pos.CENTER);
-
-
-        // ---------------------------------------------------------
-        // TOP ROW
-        // ---------------------------------------------------------
 
         addKey(topRow, "Q", KeyCode.Q);
         addKey(topRow, "W", KeyCode.W);
@@ -439,11 +311,6 @@ public class App extends Application {
         addKey(topRow, "P", KeyCode.P);
         addKey(topRow, "Backspace", KeyCode.BACK_SPACE);
 
-
-        // ---------------------------------------------------------
-        // MIDDLE ROW
-        // ---------------------------------------------------------
-
         addKey(middleRow, "A", KeyCode.A);
         addKey(middleRow, "S", KeyCode.S);
         addKey(middleRow, "D", KeyCode.D);
@@ -454,11 +321,6 @@ public class App extends Application {
         addKey(middleRow, "K", KeyCode.K);
         addKey(middleRow, "L", KeyCode.L);
 
-
-        // ---------------------------------------------------------
-        // BOTTOM ROW
-        // ---------------------------------------------------------
-
         addKey(bottomRow, "Shift", KeyCode.SHIFT);
         addKey(bottomRow, "Z", KeyCode.Z);
         addKey(bottomRow, "X", KeyCode.X);
@@ -468,14 +330,8 @@ public class App extends Application {
         addKey(bottomRow, "N", KeyCode.N);
         addKey(bottomRow, "M", KeyCode.M);
         addKey(bottomRow, ".", KeyCode.PERIOD);
-
-
-        // ---------------------------------------------------------
-        // SPACE
-        // ---------------------------------------------------------
-
+        
         addKey(spaceRow, "Space", KeyCode.SPACE);
-
 
         keyboard.getChildren().addAll(
             topRow,
@@ -484,10 +340,8 @@ public class App extends Application {
             spaceRow
         );
 
-
         return keyboard;
     }
-
 
     /**
      * Creates a virtual keyboard button.
@@ -501,44 +355,22 @@ public class App extends Application {
         String text,
         KeyCode keyCode
     ) {
-
         Button button = new Button(text);
 
-
-        // ---------------------------------------------------------
-        // KEY SIZE
-        // ---------------------------------------------------------
-
         if (keyCode == KeyCode.BACK_SPACE) {
-
             button.setPrefWidth(100);
-
         } else if (keyCode == KeyCode.SPACE) {
-
             button.setPrefWidth(400);
-
         } else if (keyCode == KeyCode.SHIFT) {
-
             button.setPrefWidth(100);
-
         } else {
-
             button.setPrefWidth(50);
         }
 
-
         button.setPrefHeight(42);
-
         button.setMinHeight(42);
         button.setMaxHeight(42);
-
         button.setFocusTraversable(false);
-
-
-        // ---------------------------------------------------------
-        // NORMAL KEY STYLE
-        // ---------------------------------------------------------
-
         button.setStyle(
             "-fx-background-color: #F2F2F2; " +
             "-fx-text-fill: #181818; " +
