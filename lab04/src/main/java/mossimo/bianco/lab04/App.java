@@ -12,15 +12,19 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 /**
-1. Number of days on the trip
-2. Amount of airfare, if any
-3. Amount of car rental fees, if any
-4. Number of miles driven, if a private vehicle was used
-5. Amount of parking fees, if any
-6. Amount of taxi charges, if any
-7. Conference or seminar registration fees, if any
-8. Lodging charges, per night
+ * 1. Number of days on the trip
+ * 2. Amount of airfare, if any
+ * 3. Amount of car rental fees, if any
+ * 4. Number of miles driven, if a private vehicle was used
+ * 5. Amount of parking fees, if any
+ * 6. Amount of taxi charges, if any
+ * 7. Conference or seminar registration fees, if any
+ * 8. Lodging charges, per night
  */
 
 public class App extends Application {
@@ -71,34 +75,51 @@ public class App extends Application {
         
         // input grid
         GridPane inputGrid = new GridPane();
+        inputGrid.getStyleClass().add("input-grid");
         
-        inputGrid.setHgap(15);
+        inputGrid.setHgap(18);
         inputGrid.setVgap(12);
-        inputGrid.setPadding(new Insets(10));
+        inputGrid.setPadding(new Insets(22));
         
         // labels
-        inputGrid.add(new Label("Number of days: "), 0, 0);
+        Label daysLabel = new Label("Number of days:");
+        daysLabel.getStyleClass().add("input-label");
+        inputGrid.add(daysLabel, 0, 0);
         inputGrid.add(numberDaysField, 1, 0);
         
-        inputGrid.add(new Label("Airfare ($):"), 0, 1);
+        Label airfareLabel = new Label("Airfare ($):");
+        airfareLabel.getStyleClass().add("input-label");
+        inputGrid.add(airfareLabel, 0, 1);
         inputGrid.add(amountAirfareField, 1, 1);
 
-        inputGrid.add(new Label("Car rental fees ($):"), 0, 2);
+        Label carRentalLabel = new Label("Car rental fees ($):");
+        carRentalLabel.getStyleClass().add("input-label");
+        inputGrid.add(carRentalLabel, 0, 2);
         inputGrid.add(carRentalFeesField, 1, 2);
 
-        inputGrid.add(new Label("Miles driven:"), 0, 3);
+        Label milesLabel = new Label("Miles driven:");
+        milesLabel.getStyleClass().add("input-label");
+        inputGrid.add(milesLabel, 0, 3);
         inputGrid.add(milesDrivenField, 1, 3);
 
-        inputGrid.add(new Label("Parking fees ($):"), 0, 4);
+        Label parkingLabel = new Label("Parking fees ($):");
+        parkingLabel.getStyleClass().add("input-label");
+        inputGrid.add(parkingLabel, 0, 4);
         inputGrid.add(parkingFeesField, 1, 4);
 
-        inputGrid.add(new Label("Taxi charges ($):"), 0, 5);
+        Label taxiLabel = new Label("Taxi charges ($):");
+        taxiLabel.getStyleClass().add("input-label");
+        inputGrid.add(taxiLabel, 0, 5);
         inputGrid.add(taxiChargesField, 1, 5);
 
-        inputGrid.add(new Label("Seminar registration ($):"), 0, 6);
+        Label seminarLabel = new Label("Seminar registration ($):");
+        seminarLabel.getStyleClass().add("input-label");
+        inputGrid.add(seminarLabel, 0, 6);
         inputGrid.add(seminarFeesField, 1, 6);
 
-        inputGrid.add(new Label("Lodging per night ($):"), 0, 7);
+        Label lodgingLabel = new Label("Lodging per night ($):");
+        lodgingLabel.getStyleClass().add("input-label");
+        inputGrid.add(lodgingLabel, 0, 7);
         inputGrid.add(lodgingChargesField, 1, 7);
         
         // calculate button
@@ -111,13 +132,20 @@ public class App extends Application {
         resultsTitle.getStyleClass().add("results-title");
         
         totalExpensesLabel = new Label("Total expenses: $0.00");
+        totalExpensesLabel.getStyleClass().add("result-total");
+
         allowableExpensesLabel = new Label("Total allowable expenses: $0.00");
+        allowableExpensesLabel.getStyleClass().add("result-allowable");
+
         excessLabel = new Label("Excess paid by businessperson: $0.00");
+        excessLabel.getStyleClass().add("result-excess");
+
         amountSavedLabel = new Label("Amount saved: $0.00");
+        amountSavedLabel.getStyleClass().add("result-saved");
         
         // results box
         VBox resultsBox = new VBox(
-                8,
+                12,
                 resultsTitle,
                 totalExpensesLabel,
                 allowableExpensesLabel,
@@ -128,8 +156,8 @@ public class App extends Application {
         resultsBox.getStyleClass().add("results-box");
         
         // main layout
-        VBox root = new VBox( 
-                15,
+        VBox root = new VBox(
+                18,
                 title,
                 subtitle,
                 inputGrid,
@@ -137,18 +165,154 @@ public class App extends Application {
                 resultsBox
         );
         
-        root.setPadding(new Insets(25));
+        root.setPadding(new Insets(30));
         root.setAlignment(Pos.TOP_CENTER);
         root.getStyleClass().add("root");
         
         // scene
-        Scene scene = new Scene(root, 600, 750);
+        Scene scene = new Scene(root, 650, 790);
         
         
         // css styling
-        // AFTER
+        String css =
+            ".root {" +
+            "    -fx-background-color: linear-gradient(to bottom right, #0f172a, #172554, #0f172a);" +
+            "    -fx-font-family: \"Segoe UI\";" +
+            "}" +
+
+            ".title {" +
+            "    -fx-text-fill: #f8fafc;" +
+            "    -fx-font-size: 30px;" +
+            "    -fx-font-weight: bold;" +
+            "}" +
+
+            ".subtitle {" +
+            "    -fx-text-fill: #94a3b8;" +
+            "    -fx-font-size: 14px;" +
+            "}" +
+
+            ".input-grid {" +
+            "    -fx-background-color: rgba(255, 255, 255, 0.07);" +
+            "    -fx-background-radius: 18px;" +
+            "    -fx-border-radius: 18px;" +
+            "    -fx-border-color: rgba(255, 255, 255, 0.12);" +
+            "    -fx-border-width: 1px;" +
+            "}" +
+
+            ".input-label {" +
+            "    -fx-text-fill: #e2e8f0;" +
+            "    -fx-font-size: 14px;" +
+            "    -fx-font-weight: bold;" +
+            "}" +
+
+            ".text-field {" +
+            "    -fx-pref-width: 230px;" +
+            "    -fx-pref-height: 38px;" +
+            "    -fx-background-color: #f8fafc;" +
+            "    -fx-background-radius: 10px;" +
+            "    -fx-border-radius: 10px;" +
+            "    -fx-border-color: transparent;" +
+            "    -fx-border-width: 2px;" +
+            "    -fx-padding: 0px 12px;" +
+            "    -fx-font-size: 14px;" +
+            "    -fx-text-fill: #0f172a;" +
+            "    -fx-prompt-text-fill: #94a3b8;" +
+            "}" +
+
+            ".text-field:hover {" +
+            "    -fx-background-color: #ffffff;" +
+            "    -fx-border-color: #60a5fa;" +
+            "}" +
+
+            ".text-field:focused {" +
+            "    -fx-background-color: #ffffff;" +
+            "    -fx-border-color: #38bdf8;" +
+            "    -fx-effect: dropshadow(gaussian, rgba(56, 189, 248, 0.35), 12, 0.3, 0, 0);" +
+            "}" +
+
+            ".calculate-button {" +
+            "    -fx-background-color: linear-gradient(to right, #2563eb, #06b6d4);" +
+            "    -fx-text-fill: white;" +
+            "    -fx-font-size: 16px;" +
+            "    -fx-font-weight: bold;" +
+            "    -fx-padding: 13px 35px;" +
+            "    -fx-background-radius: 12px;" +
+            "    -fx-border-radius: 12px;" +
+            "    -fx-cursor: hand;" +
+            "    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 12, 0.2, 0, 5);" +
+            "}" +
+
+            ".calculate-button:hover {" +
+            "    -fx-background-color: linear-gradient(to right, #3b82f6, #22d3ee);" +
+            "    -fx-effect: dropshadow(gaussian, rgba(34, 211, 238, 0.45), 18, 0.35, 0, 5);" +
+            "    -fx-scale-x: 1.03;" +
+            "    -fx-scale-y: 1.03;" +
+            "}" +
+
+            ".calculate-button:pressed {" +
+            "    -fx-scale-x: 0.98;" +
+            "    -fx-scale-y: 0.98;" +
+            "}" +
+
+            ".results-box {" +
+            "    -fx-background-color: rgba(255, 255, 255, 0.07);" +
+            "    -fx-background-radius: 18px;" +
+            "    -fx-border-radius: 18px;" +
+            "    -fx-border-color: rgba(255, 255, 255, 0.12);" +
+            "    -fx-border-width: 1px;" +
+            "    -fx-padding: 22px;" +
+            "    -fx-pref-width: 540px;" +
+            "    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 20, 0.2, 0, 8);" +
+            "}" +
+
+            ".results-title {" +
+            "    -fx-text-fill: #f8fafc;" +
+            "    -fx-font-size: 21px;" +
+            "    -fx-font-weight: bold;" +
+            "}" +
+
+            ".result-total {" +
+            "    -fx-text-fill: #f8fafc;" +
+            "    -fx-font-size: 15px;" +
+            "    -fx-font-weight: bold;" +
+            "}" +
+
+            ".result-allowable {" +
+            "    -fx-text-fill: #60a5fa;" +
+            "    -fx-font-size: 15px;" +
+            "    -fx-font-weight: bold;" +
+            "}" +
+
+            ".result-excess {" +
+            "    -fx-text-fill: #fb7185;" +
+            "    -fx-font-size: 15px;" +
+            "    -fx-font-weight: bold;" +
+            "}" +
+
+            ".result-saved {" +
+            "    -fx-text-fill: #4ade80;" +
+            "    -fx-font-size: 15px;" +
+            "    -fx-font-weight: bold;" +
+            "}" +
+
+            ".error {" +
+            "    -fx-text-fill: #fb7185;" +
+            "    -fx-font-weight: bold;" +
+            "}";
         
         
+        try {
+            File cssFile = File.createTempFile("travel-expenses-", ".css");
+            cssFile.deleteOnExit();
+
+            try (FileWriter writer = new FileWriter(cssFile)) {
+                writer.write(css);
+            }
+
+            scene.getStylesheets().add(cssFile.toURI().toURL().toExternalForm());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
         stage.setTitle("Business Travel Expenses Calculator");
         stage.setScene(scene);
@@ -166,35 +330,40 @@ public class App extends Application {
     
     private void calculateExpenses() {
         try {
+            if (numberDaysField.getText().trim().isEmpty()) {
+                showError("Please enter the number of days.");
+                return;
+            }
+
             int numberOfDays =
-                    Integer.parseInt(numberDaysField.getText());
-            
+                    Integer.parseInt(numberDaysField.getText().trim());
+
             double airfare =
-                    Double.parseDouble(amountAirfareField.getText());
-            
+                    getValue(amountAirfareField);
+
             double carRental =
-                    Double.parseDouble(carRentalFeesField.getText());
-            
+                    getValue(carRentalFeesField);
+
             double milesDriven =
-                    Double.parseDouble(milesDrivenField.getText());
-            
+                    getValue(milesDrivenField);
+
             double parking =
-                    Double.parseDouble(parkingFeesField.getText());
-            
-            double taxi = 
-                    Double.parseDouble(taxiChargesField.getText());
-            
+                    getValue(parkingFeesField);
+
+            double taxi =
+                    getValue(taxiChargesField);
+
             double seminar =
-                    Double.parseDouble(seminarFeesField.getText());
-            
-            double lodgingPerNight = 
-                    Double.parseDouble(lodgingChargesField.getText());
-            
+                    getValue(seminarFeesField);
+
+            double lodgingPerNight =
+                    getValue(lodgingChargesField);
+
             if (numberOfDays <= 0) {
                 showError("Number of days must be greater than 0.");
                 return;
             }
-            
+
             if (airfare < 0 ||
                     carRental < 0 ||
                     milesDriven < 0 ||
@@ -202,14 +371,15 @@ public class App extends Application {
                     taxi < 0 ||
                     seminar < 0 ||
                     lodgingPerNight < 0) {
-                
+
                 showError("Expenses cannot be negative.");
                 return;
             }
-            
+
             double mealsActual = numberOfDays * MEAL_ALLOWANCE;
             double vehicleExpense = milesDriven * PRIVATE_VEHICLE_RATE;
             double lodgingActual = numberOfDays * lodgingPerNight;
+
             double totalExpenses =
                     airfare
                     + carRental
@@ -219,14 +389,15 @@ public class App extends Application {
                     + seminar
                     + lodgingActual
                     + mealsActual;
-            
+
             // allowable expenses
             double allowableMeals = numberOfDays * MEAL_ALLOWANCE;
             double allowableParking = Math.min(parking, numberOfDays * PARKING_ALLOWANCE);
             double allowableTaxi = Math.min(taxi, numberOfDays * TAXI_ALLOWANCE);
             double allowableLodging = Math.min(lodgingActual, numberOfDays * LODGING_ALLOWANCE);
             double allowableVehicle = vehicleExpense;
-            double totalAllowableExpenses = 
+
+            double totalAllowableExpenses =
                     airfare
                     + carRental
                     + allowableVehicle
@@ -235,27 +406,60 @@ public class App extends Application {
                     + allowableTaxi
                     + seminar
                     + allowableLodging;
-            
+
             // excess and savings
             double excess = Math.max(0, totalExpenses - totalAllowableExpenses);
             double saved = Math.max(0, totalAllowableExpenses - totalExpenses);
-            
+
             // display results
-            totalExpensesLabel.setText(String.format( "Total expenses: $%.2f", totalExpenses ) );
-            allowableExpensesLabel.setText( String.format( "Total allowable expenses: $%.2f", 
-                    totalAllowableExpenses ) ); 
-            excessLabel.setText( String.format( "Excess paid by businessperson: $%.2f", excess ) );
-            amountSavedLabel.setText( String.format( "Amount saved: $%.2f", saved ) );
-        
+            totalExpensesLabel.setText(
+                    String.format("Total expenses: $%.2f", totalExpenses)
+            );
+
+            allowableExpensesLabel.setText(
+                    String.format(
+                            "Total allowable expenses: $%.2f",
+                            totalAllowableExpenses
+                    )
+            );
+
+            excessLabel.setText(
+                    String.format(
+                            "Excess paid by businessperson: $%.2f",
+                            excess
+                    )
+            );
+
+            amountSavedLabel.setText(
+                    String.format(
+                            "Amount saved: $%.2f",
+                            saved
+                    )
+            );
+
         } catch (NumberFormatException e) {
             showError("Please enter valid numbers in all fields.");
         }
     }
+
+    private double getValue(TextField field) {
+        String text = field.getText().trim();
+
+        if (text.isEmpty()) {
+            return 0.0;
+        }
+
+        return Double.parseDouble(text);
+    }
             
     // error message
-    private showError() {
-    
-        return null;
+    private void showError(String message) {
+        totalExpensesLabel.setText("Error: " + message);
+        allowableExpensesLabel.setText("");
+        excessLabel.setText("");
+        amountSavedLabel.setText("");
+
+        totalExpensesLabel.getStyleClass().add("error");
     }
         
     public static void main(String[] args) {
