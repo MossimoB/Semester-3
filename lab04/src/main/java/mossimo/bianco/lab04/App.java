@@ -175,130 +175,154 @@ public class App extends Application {
         
         // css styling
         String css =
-            ".root {" +
-            "    -fx-background-color: linear-gradient(to bottom right, #0f172a, #172554, #0f172a);" +
-            "    -fx-font-family: \"Segoe UI\";" +
-            "}" +
+           ".root {" +
+           "    -fx-background-color: linear-gradient(to bottom right, #0b0f14, #111827, #0b0f14);" +
+           "    -fx-font-family: \"Segoe UI\";" +
+           "}" +
 
-            ".title {" +
-            "    -fx-text-fill: #f8fafc;" +
-            "    -fx-font-size: 30px;" +
-            "    -fx-font-weight: bold;" +
-            "}" +
+           ".title {" +
+           "    -fx-text-fill: #f8fafc;" +
+           "    -fx-font-size: 30px;" +
+           "    -fx-font-weight: bold;" +
+           "    -fx-letter-spacing: 0.5px;" +
+           "}" +
 
-            ".subtitle {" +
-            "    -fx-text-fill: #94a3b8;" +
-            "    -fx-font-size: 14px;" +
-            "}" +
+           ".subtitle {" +
+           "    -fx-text-fill: #8b98aa;" +
+           "    -fx-font-size: 14px;" +
+           "    -fx-padding: 0 0 8px 0;" +
+           "}" +
 
-            ".input-grid {" +
-            "    -fx-background-color: rgba(255, 255, 255, 0.07);" +
-            "    -fx-background-radius: 18px;" +
-            "    -fx-border-radius: 18px;" +
-            "    -fx-border-color: rgba(255, 255, 255, 0.12);" +
-            "    -fx-border-width: 1px;" +
-            "}" +
+           ".input-grid {" +
+           "    -fx-background-color: rgba(255, 255, 255, 0.055);" +
+           "    -fx-background-radius: 22px;" +
+           "    -fx-border-radius: 22px;" +
+           "    -fx-border-color: rgba(255, 255, 255, 0.10);" +
+           "    -fx-border-width: 1px;" +
+           "    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 25, 0.20, 0, 10);" +
+           "}" +
 
-            ".input-label {" +
-            "    -fx-text-fill: #e2e8f0;" +
-            "    -fx-font-size: 14px;" +
-            "    -fx-font-weight: bold;" +
-            "}" +
+           ".input-grid:hover {" +
+           "    -fx-border-color: rgba(255, 255, 255, 0.15);" +
+           "}" +
 
-            ".text-field {" +
-            "    -fx-pref-width: 230px;" +
-            "    -fx-pref-height: 38px;" +
-            "    -fx-background-color: #f8fafc;" +
-            "    -fx-background-radius: 10px;" +
-            "    -fx-border-radius: 10px;" +
-            "    -fx-border-color: transparent;" +
-            "    -fx-border-width: 2px;" +
-            "    -fx-padding: 0px 12px;" +
-            "    -fx-font-size: 14px;" +
-            "    -fx-text-fill: #0f172a;" +
-            "    -fx-prompt-text-fill: #94a3b8;" +
-            "}" +
+           ".input-label {" +
+           "    -fx-text-fill: #cbd5e1;" +
+           "    -fx-font-size: 13px;" +
+           "    -fx-font-weight: bold;" +
+           "}" +
 
-            ".text-field:hover {" +
-            "    -fx-background-color: #ffffff;" +
-            "    -fx-border-color: #60a5fa;" +
-            "}" +
+           ".text-field {" +
+           "    -fx-pref-width: 230px;" +
+           "    -fx-pref-height: 40px;" +
+           "    -fx-background-color: rgba(255, 255, 255, 0.075);" +
+           "    -fx-background-radius: 12px;" +
+           "    -fx-border-radius: 12px;" +
+           "    -fx-border-color: rgba(255, 255, 255, 0.08);" +
+           "    -fx-border-width: 1px;" +
+           "    -fx-padding: 0px 14px;" +
+           "    -fx-font-size: 14px;" +
+           "    -fx-text-fill: #f8fafc;" +
+           "    -fx-prompt-text-fill: #64748b;" +
+           "    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.25), 7, 0.2, 0, 2);" +
+           "}" +
 
-            ".text-field:focused {" +
-            "    -fx-background-color: #ffffff;" +
-            "    -fx-border-color: #38bdf8;" +
-            "    -fx-effect: dropshadow(gaussian, rgba(56, 189, 248, 0.35), 12, 0.3, 0, 0);" +
-            "}" +
+           ".text-field:hover {" +
+           "    -fx-background-color: rgba(255, 255, 255, 0.095);" +
+           "    -fx-border-color: rgba(148, 163, 184, 0.25);" +
+           "}" +
 
-            ".calculate-button {" +
-            "    -fx-background-color: linear-gradient(to right, #2563eb, #06b6d4);" +
-            "    -fx-text-fill: white;" +
-            "    -fx-font-size: 16px;" +
-            "    -fx-font-weight: bold;" +
-            "    -fx-padding: 13px 35px;" +
-            "    -fx-background-radius: 12px;" +
-            "    -fx-border-radius: 12px;" +
-            "    -fx-cursor: hand;" +
-            "    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 12, 0.2, 0, 5);" +
-            "}" +
+           ".text-field:focused {" +
+           "    -fx-background-color: rgba(255, 255, 255, 0.11);" +
+           "    -fx-border-color: #60a5fa;" +
+           "    -fx-border-width: 1.5px;" +
+           "    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.20), 6, 0.2, 0, 2)," +
+           "                 dropshadow(gaussian, rgba(96, 165, 250, 0.22), 14, 0.25, 0, 0);" +
+           "}" +
 
-            ".calculate-button:hover {" +
-            "    -fx-background-color: linear-gradient(to right, #3b82f6, #22d3ee);" +
-            "    -fx-effect: dropshadow(gaussian, rgba(34, 211, 238, 0.45), 18, 0.35, 0, 5);" +
-            "    -fx-scale-x: 1.03;" +
-            "    -fx-scale-y: 1.03;" +
-            "}" +
+           ".calculate-button {" +
+           "    -fx-background-color: linear-gradient(to right, #2563eb, #3b82f6);" +
+           "    -fx-text-fill: #ffffff;" +
+           "    -fx-font-size: 15px;" +
+           "    -fx-font-weight: bold;" +
+           "    -fx-padding: 13px 34px;" +
+           "    -fx-background-radius: 13px;" +
+           "    -fx-border-radius: 13px;" +
+           "    -fx-border-color: rgba(255, 255, 255, 0.12);" +
+           "    -fx-border-width: 1px;" +
+           "    -fx-cursor: hand;" +
+           "    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.28), 16, 0.25, 0, 6);" +
+           "}" +
 
-            ".calculate-button:pressed {" +
-            "    -fx-scale-x: 0.98;" +
-            "    -fx-scale-y: 0.98;" +
-            "}" +
+           ".calculate-button:hover {" +
+           "    -fx-background-color: linear-gradient(to right, #3b82f6, #60a5fa);" +
+           "    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.42), 22, 0.30, 0, 7);" +
+           "    -fx-scale-x: 1.025;" +
+           "    -fx-scale-y: 1.025;" +
+           "}" +
 
-            ".results-box {" +
-            "    -fx-background-color: rgba(255, 255, 255, 0.07);" +
-            "    -fx-background-radius: 18px;" +
-            "    -fx-border-radius: 18px;" +
-            "    -fx-border-color: rgba(255, 255, 255, 0.12);" +
-            "    -fx-border-width: 1px;" +
-            "    -fx-padding: 22px;" +
-            "    -fx-pref-width: 540px;" +
-            "    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 20, 0.2, 0, 8);" +
-            "}" +
+           ".calculate-button:pressed {" +
+           "    -fx-background-color: #1d4ed8;" +
+           "    -fx-scale-x: 0.98;" +
+           "    -fx-scale-y: 0.98;" +
+           "    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 8, 0.20, 0, 3);" +
+           "}" +
 
-            ".results-title {" +
-            "    -fx-text-fill: #f8fafc;" +
-            "    -fx-font-size: 21px;" +
-            "    -fx-font-weight: bold;" +
-            "}" +
+           ".results-box {" +
+           "    -fx-background-color: rgba(255, 255, 255, 0.055);" +
+           "    -fx-background-radius: 22px;" +
+           "    -fx-border-radius: 22px;" +
+           "    -fx-border-color: rgba(255, 255, 255, 0.10);" +
+           "    -fx-border-width: 1px;" +
+           "    -fx-padding: 22px;" +
+           "    -fx-pref-width: 540px;" +
+           "    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.38), 28, 0.22, 0, 10);" +
+           "}" +
 
-            ".result-total {" +
-            "    -fx-text-fill: #f8fafc;" +
-            "    -fx-font-size: 15px;" +
-            "    -fx-font-weight: bold;" +
-            "}" +
+           ".results-box:hover {" +
+           "    -fx-border-color: rgba(255, 255, 255, 0.14);" +
+           "}" +
 
-            ".result-allowable {" +
-            "    -fx-text-fill: #60a5fa;" +
-            "    -fx-font-size: 15px;" +
-            "    -fx-font-weight: bold;" +
-            "}" +
+           ".results-title {" +
+           "    -fx-text-fill: #f8fafc;" +
+           "    -fx-font-size: 20px;" +
+           "    -fx-font-weight: bold;" +
+           "    -fx-padding: 0 0 5px 0;" +
+           "}" +
 
-            ".result-excess {" +
-            "    -fx-text-fill: #fb7185;" +
-            "    -fx-font-size: 15px;" +
-            "    -fx-font-weight: bold;" +
-            "}" +
+           ".result-total {" +
+           "    -fx-text-fill: #f8fafc;" +
+           "    -fx-font-size: 15px;" +
+           "    -fx-font-weight: bold;" +
+           "    -fx-padding: 8px 0;" +
+           "}" +
 
-            ".result-saved {" +
-            "    -fx-text-fill: #4ade80;" +
-            "    -fx-font-size: 15px;" +
-            "    -fx-font-weight: bold;" +
-            "}" +
+           ".result-allowable {" +
+           "    -fx-text-fill: #60a5fa;" +
+           "    -fx-font-size: 15px;" +
+           "    -fx-font-weight: bold;" +
+           "    -fx-padding: 8px 0;" +
+           "}" +
 
-            ".error {" +
-            "    -fx-text-fill: #fb7185;" +
-            "    -fx-font-weight: bold;" +
-            "}";
+           ".result-excess {" +
+           "    -fx-text-fill: #fb7185;" +
+           "    -fx-font-size: 15px;" +
+           "    -fx-font-weight: bold;" +
+           "    -fx-padding: 8px 0;" +
+           "}" +
+
+           ".result-saved {" +
+           "    -fx-text-fill: #4ade80;" +
+           "    -fx-font-size: 15px;" +
+           "    -fx-font-weight: bold;" +
+           "    -fx-padding: 8px 0;" +
+           "}" +
+
+           ".error {" +
+           "    -fx-text-fill: #fb7185;" +
+           "    -fx-font-weight: bold;" +
+           "    -fx-font-size: 14px;" +
+           "}";
         
         
         try {
