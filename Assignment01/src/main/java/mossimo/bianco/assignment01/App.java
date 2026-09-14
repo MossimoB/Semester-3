@@ -416,7 +416,6 @@ public class App extends Application {
         });
 
         virtualKeys.put(keyCode, button);
-
         row.getChildren().add(button);
     }
 

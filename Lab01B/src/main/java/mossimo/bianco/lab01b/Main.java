@@ -68,5 +68,6 @@ public class Main {
         System.out.println(String.format("Average score: %s", courseGrades.getAverage()));
         System.out.println(String.format("Highest score: %s", courseGrades.getHighest().getScore()));
         System.out.println(String.format("Lowest score: %s", courseGrades.getLowest().getScore()));
-    }    }
+    }
+}
     
