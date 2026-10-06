@@ -40,27 +40,35 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+// Main JavaFX application
 public class App extends Application {
 
+    // Size of the window
     private final double WIDTH = 640;
     private final double HEIGHT = 480;
 
+    // Coordinates of the rectangle's four corners
     private final double LEFT = 120;
     private final double RIGHT = 520;
     private final double TOP = 70;
     private final double BOTTOM = 280;
 
+    // Speed of the circle moving around the path
     private final double SPEED = 100;
 
+    // Determines whether the application closes after the animation
     private final boolean EXIT_WHEN_FINISHED = false;
 
+    // Main UI containers and status text
     private Pane topPane;
     private HBox bottomPane;
     private Text statusText;
 
+    // The two animated objects
     private Circle objectA;
     private Polygon objectB;
 
+    // Animation objects
     private PathTransition pathTransition;
     private SequentialTransition sequentialTransition;
     private ParallelTransition bothAnimations;
@@ -69,6 +77,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
 
+        // Main layout containing the animation area and buttons
         BorderPane root = new BorderPane();
 
         // Main background
@@ -76,45 +85,52 @@ public class App extends Application {
                 "-fx-background-color: linear-gradient(to bottom, #0f172a, #1e293b);"
         );
 
+        // Create the top animation area
         topPane = new Pane();
         topPane.setPrefSize(WIDTH, 360);
 
-        // Animation panel styling
+        // Style the animation area
         topPane.setStyle(
                 "-fx-background-color: linear-gradient(to bottom right, #f8fafc, #e2e8f0);" +
                 "-fx-border-color: #334155;" +
                 "-fx-border-width: 0 0 2 0;"
         );
 
+        // Create the path and animations
         Path path = createAnimationArea();
         createAnimations(path);
 
+        // Create the bottom button area
         bottomPane = createButtons();
         bottomPane.setPrefSize(WIDTH, 120);
 
-        // Bottom control panel
+        // Style the button area
         bottomPane.setStyle(
                 "-fx-background-color: linear-gradient(to bottom, #1e293b, #0f172a);" +
                 "-fx-border-color: #475569;" +
                 "-fx-border-width: 2 0 0 0;"
         );
 
+        // Put the animation and buttons into the BorderPane
         root.setTop(topPane);
         root.setBottom(bottomPane);
 
+        // Create the scene
         Scene scene = new Scene(root, WIDTH, HEIGHT);
 
-        // Scene-level CSS
+        // Set the default font
         scene.getRoot().setStyle(
                 "-fx-font-family: 'Segoe UI';"
         );
 
+        // Configure and display the window
         stage.setTitle("JavaFX Path and Sequential Animation");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
     }
 
+    // Adds a background and border to a JavaFX region
     private void paintBox(Region box, Color color) {
         box.setBackground(new Background(
                 new BackgroundFill(
@@ -134,8 +150,10 @@ public class App extends Application {
         ));
     }
 
+    // Creates the visual objects shown in the animation area
     private Path createAnimationArea() {
 
+        // Title for Animation A
         Text title = new Text(
                 20,
                 30,
@@ -150,7 +168,7 @@ public class App extends Application {
 
         title.setFill(Color.web("#1e293b"));
 
-        // Status pill
+        // Text that tells the user what the animation is doing
         statusText = new Text(
                 390,
                 30,
@@ -165,7 +183,7 @@ public class App extends Application {
 
         statusText.setFill(Color.web("#2563eb"));
 
-        // Decorative subtitle
+        // Small description under the title
         Text subtitle = new Text(
                 20,
                 52,
@@ -180,7 +198,7 @@ public class App extends Application {
 
         subtitle.setFill(Color.web("#64748b"));
 
-        // Rectangle path
+        // Create the rectangular path: M -> N -> P -> Q -> M
         Path path = new Path(
                 new MoveTo(LEFT, TOP),
                 new LineTo(RIGHT, TOP),
@@ -189,14 +207,15 @@ public class App extends Application {
                 new LineTo(LEFT, TOP)
         );
 
+        // Make the path visible but not filled
         path.setFill(null);
         path.setStroke(Color.web("#94a3b8"));
         path.setStrokeWidth(2.5);
 
-        // Dashed path
+        // Make the path dashed
         path.getStrokeDashArray().addAll(10.0, 8.0);
 
-        // Corner labels
+        // Labels for the four corners
         Text m = new Text(
                 LEFT - 25,
                 TOP - 10,
@@ -221,6 +240,7 @@ public class App extends Application {
                 "Q"
         );
 
+        // Apply the same font styling to all corner labels
         for (Text corner : new Text[]{m, n, p, q}) {
             corner.setFont(Font.font(
                     "Segoe UI",
@@ -231,7 +251,7 @@ public class App extends Application {
             corner.setFill(Color.web("#475569"));
         }
 
-        // Blue moving circle
+        // Circle used for Animation A
         objectA = new Circle(
                 LEFT,
                 TOP,
@@ -243,7 +263,7 @@ public class App extends Application {
         objectA.setStroke(Color.web("#1d4ed8"));
         objectA.setStrokeWidth(3);
 
-        // Small highlight inside circle
+        // Small white highlight on the circle
         Circle circleHighlight = new Circle(
                 LEFT - 5,
                 TOP - 5,
@@ -257,7 +277,7 @@ public class App extends Application {
                 0.7
         ));
 
-        // Animation B title
+        // Title for Animation B
         Text objectBLabel = new Text(
                 20,
                 345,
@@ -272,7 +292,7 @@ public class App extends Application {
 
         objectBLabel.setFill(Color.web("#1e293b"));
 
-        // Orange triangle
+        // Triangle used for Animation B
         objectB = new Polygon(
                 0, -25,
                 22, 20,
@@ -284,9 +304,11 @@ public class App extends Application {
         objectB.setStroke(Color.web("#c2410c"));
         objectB.setStrokeWidth(3);
 
+        // Starting position of the triangle
         objectB.setLayoutX(320);
         objectB.setLayoutY(210);
 
+        // Add all visual elements to the animation pane
         topPane.getChildren().addAll(
                 title,
                 subtitle,
@@ -302,15 +324,19 @@ public class App extends Application {
                 objectB
         );
 
+        // Return the path so it can be used by PathTransition
         return path;
     }
 
+    // Creates and connects all of the animations
     private void createAnimations(Path path) {
 
+        // Calculate the lengths of the rectangle sides
         double topSide = RIGHT - LEFT;
         double rightSide = BOTTOM - TOP;
         double perimeter = 2 * topSide + 2 * rightSide;
 
+        // Calculate how long the circle takes to travel each side
         Duration timeMN =
                 Duration.seconds(topSide / SPEED);
 
@@ -320,18 +346,19 @@ public class App extends Application {
         Duration timePQ = timeMN;
         Duration timeQM = timeNP;
 
-        // Animation A
+        // Animation A: move the circle around the rectangle
         pathTransition = new PathTransition(
                 Duration.seconds(perimeter / SPEED),
                 path,
                 objectA
         );
 
+        // Linear interpolation keeps the circle moving at a constant speed
         pathTransition.setInterpolator(
                 Interpolator.LINEAR
         );
 
-        // Animation B - Fade
+        // Animation B, step 1: fade the triangle
         FadeTransition fade =
                 new FadeTransition(
                         timeMN,
@@ -341,13 +368,14 @@ public class App extends Application {
         fade.setFromValue(1.0);
         fade.setToValue(0.3);
 
+        // Update the status after fading
         fade.setOnFinished(e ->
                 statusText.setText(
                         "A at N  •  B scaling"
                 )
         );
 
-        // Animation B - Scale
+        // Animation B, step 2: make the triangle larger
         ScaleTransition scale =
                 new ScaleTransition(
                         timeNP,
@@ -359,13 +387,14 @@ public class App extends Application {
         scale.setToX(1.8);
         scale.setToY(1.8);
 
+        // Update the status after scaling
         scale.setOnFinished(e ->
                 statusText.setText(
                         "A at P  •  B rotating"
                 )
         );
 
-        // Animation B - Rotate
+        // Animation B, step 3: rotate the triangle
         RotateTransition rotate =
                 new RotateTransition(
                         timePQ,
@@ -375,13 +404,14 @@ public class App extends Application {
         rotate.setFromAngle(0);
         rotate.setToAngle(360);
 
+        // Update the status after rotating
         rotate.setOnFinished(e ->
                 statusText.setText(
                         "A at Q  •  B moving up"
                 )
         );
 
-        // Animation B - Move
+        // Animation B, step 4: move the triangle upward
         TranslateTransition moveUp =
                 new TranslateTransition(
                         timeQM,
@@ -391,12 +421,14 @@ public class App extends Application {
         moveUp.setFromY(0);
         moveUp.setToY(-80);
 
+        // Update the status when the movement is complete
         moveUp.setOnFinished(e ->
                 statusText.setText(
                         "A back at M  •  done"
                 )
         );
 
+        // Run the four triangle animations one after another
         sequentialTransition =
                 new SequentialTransition(
                         fade,
@@ -405,35 +437,41 @@ public class App extends Application {
                         moveUp
                 );
 
+        // Run Animation A and Animation B at the same time
         bothAnimations =
                 new ParallelTransition(
                         pathTransition,
                         sequentialTransition
                 );
 
+        // Wait two seconds after both animations finish
         PauseTransition endDelay =
                 new PauseTransition(
                         Duration.seconds(2)
                 );
 
+        // Play the animations first, then the delay
         fullShow =
                 new SequentialTransition(
                         bothAnimations,
                         endDelay
                 );
 
+        // What happens when everything is finished
         fullShow.setOnFinished(e -> {
 
             statusText.setText(
                     "Finished  •  Press Reset or Start"
             );
 
+            // Close the program if this option is enabled
             if (EXIT_WHEN_FINISHED) {
                 Platform.exit();
             }
         });
     }
 
+    // Creates the Start, Reset, and Exit buttons
     private HBox createButtons() {
 
         Button startButton =
@@ -445,7 +483,7 @@ public class App extends Application {
         Button exitButton =
                 new Button("✕  Exit");
 
-        // Button sizing
+        // Set the button sizes
         startButton.setPrefWidth(125);
         resetButton.setPrefWidth(125);
         exitButton.setPrefWidth(125);
@@ -454,7 +492,7 @@ public class App extends Application {
         resetButton.setPrefHeight(45);
         exitButton.setPrefHeight(45);
 
-        // Internal CSS for buttons
+        // Basic button styling using inline CSS
         String buttonStyle =
                 "-fx-background-color: #334155;" +
                 "-fx-text-fill: white;" +
@@ -471,7 +509,7 @@ public class App extends Application {
         resetButton.setStyle(buttonStyle);
         exitButton.setStyle(buttonStyle);
 
-        // Hover effects
+        // Change Start button appearance when the mouse is over it
         startButton.setOnMouseEntered(e ->
                 startButton.setStyle(
                         "-fx-background-color: #2563eb;" +
@@ -487,10 +525,12 @@ public class App extends Application {
                 )
         );
 
+        // Return Start button to its normal style
         startButton.setOnMouseExited(e ->
                 startButton.setStyle(buttonStyle)
         );
 
+        // Change Reset button appearance when hovered
         resetButton.setOnMouseEntered(e ->
                 resetButton.setStyle(
                         "-fx-background-color: #7c3aed;" +
@@ -506,10 +546,12 @@ public class App extends Application {
                 )
         );
 
+        // Return Reset button to its normal style
         resetButton.setOnMouseExited(e ->
                 resetButton.setStyle(buttonStyle)
         );
 
+        // Change Exit button appearance when hovered
         exitButton.setOnMouseEntered(e ->
                 exitButton.setStyle(
                         "-fx-background-color: #dc2626;" +
@@ -525,11 +567,12 @@ public class App extends Application {
                 )
         );
 
+        // Return Exit button to its normal style
         exitButton.setOnMouseExited(e ->
                 exitButton.setStyle(buttonStyle)
         );
 
-        // Start
+        // Start the animation from the beginning
         startButton.setOnAction(e -> {
 
             if (fullShow.getStatus() !=
@@ -545,7 +588,7 @@ public class App extends Application {
             }
         });
 
-        // Reset
+        // Stop the animation and restore the starting positions
         resetButton.setOnAction(e -> {
 
             fullShow.stop();
@@ -557,7 +600,7 @@ public class App extends Application {
             );
         });
 
-        // Exit
+        // Stop the animation and close the application
         exitButton.setOnAction(e -> {
 
             fullShow.stop();
@@ -565,6 +608,7 @@ public class App extends Application {
             Platform.exit();
         });
 
+        // Place the buttons horizontally with spacing
         HBox box =
                 new HBox(
                         20,
@@ -573,8 +617,10 @@ public class App extends Application {
                         exitButton
                 );
 
+        // Center the buttons
         box.setAlignment(Pos.CENTER);
 
+        // Add space around the buttons
         box.setPadding(
                 new Insets(20, 20, 20, 20)
         );
@@ -582,21 +628,28 @@ public class App extends Application {
         return box;
     }
 
+    // Returns both animated objects to their original state
     private void resetObjects() {
 
+        // Reset circle position
         objectA.setTranslateX(0);
         objectA.setTranslateY(0);
 
+        // Reset triangle opacity
         objectB.setOpacity(1.0);
 
+        // Reset triangle size
         objectB.setScaleX(1.0);
         objectB.setScaleY(1.0);
 
+        // Reset triangle rotation
         objectB.setRotate(0);
 
+        // Reset triangle vertical movement
         objectB.setTranslateY(0);
     }
 
+    // Program entry point
     public static void main(String[] args) {
         launch();
     }
