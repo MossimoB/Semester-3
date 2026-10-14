@@ -1,16 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mossimo.bianco.lab08_paint.PrimaryController">
-   <children>
-      <Label text="Primary View" />
-      <Button fx:id="primaryButton" text="Switch to Secondary View" onAction="#switchToSecondary"/>
-   </children>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-</VBox>
+<BorderPane prefHeight="480.0"
+            prefWidth="640.0"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="mossimo.bianco.lab08_paint.PainterController">
+
+    <padding>
+        <Insets top="8.0" right="8.0" bottom="8.0" left="8.0"/>
+    </padding>
+
+    <left>
+        <VBox spacing="8.0"
+              minWidth="-Infinity"
+              prefWidth="-1.0"
+              maxWidth="-Infinity"
+              BorderPane.alignment="TOP_LEFT">
+
+            <BorderPane.margin>
+                <Insets right="8.0"/>
+            </BorderPane.margin>
+
+            <children>
+                <TitledPane text="Drawing Color"
+                            expanded="true">
+                    <content>
+                        <VBox spacing="8.0">
+                            <children>
+                                <RadioButton fx:id="blackRadioButton"
+                                             text="Black"
+                                             selected="true"
+                                             toggleGroup="$colorToggleGroup"
+                                             onAction="#colorRadioButtonSelected">
+                                    <toggleGroup>
+                                        <ToggleGroup fx:id="colorToggleGroup"/>
+                                    </toggleGroup>
+                                </RadioButton>
+
+                                <RadioButton fx:id="redRadioButton"
+                                             text="Red"
+                                             textFill="RED"
+                                             toggleGroup="$colorToggleGroup"
+                                             onAction="#colorRadioButtonSelected"/>
+
+                                <RadioButton fx:id="greenRadioButton"
+                                             text="Green"
+                                             textFill="GREEN"
+                                             toggleGroup="$colorToggleGroup"
+                                             onAction="#colorRadioButtonSelected"/>
+
+                                <RadioButton fx:id="blueRadioButton"
+                                             text="Blue"
+                                             textFill="BLUE"
+                                             toggleGroup="$colorToggleGroup"
+                                             onAction="#colorRadioButtonSelected"/>
+                            </children>
+                        </VBox>
+                    </content>
+                </TitledPane>
+
+                <TitledPane text="Pen Size"
+                            expanded="true">
+                    <content>
+                        <VBox spacing="8.0">
+                            <children>
+                                <RadioButton fx:id="smallRadioButton"
+                                             text="Small"
+                                             toggleGroup="$sizeToggleGroup"
+                                             onAction="#sizeRadioButtonSelected">
+                                    <toggleGroup>
+                                        <ToggleGroup fx:id="sizeToggleGroup"/>
+                                    </toggleGroup>
+                                </RadioButton>
+
+                                <RadioButton fx:id="mediumRadioButton"
+                                             text="Medium"
+                                             selected="true"
+                                             toggleGroup="$sizeToggleGroup"
+                                             onAction="#sizeRadioButtonSelected"/>
+
+                                <RadioButton fx:id="largeRadioButton"
+                                             text="Large"
+                                             toggleGroup="$sizeToggleGroup"
+                                             onAction="#sizeRadioButtonSelected"/>
+                            </children>
+                        </VBox>
+                    </content>
+                </TitledPane>
+
+                <Button fx:id="undoButton"
+                        text="Undo"
+                        maxWidth="Infinity"
+                        onAction="#undoButtonPressed"/>
+
+                <Button fx:id="clearButton"
+                        text="Clear"
+                        maxWidth="Infinity"
+                        onAction="#clearButtonPressed"/>
+            </children>
+        </VBox>
+    </left>
+
+    <center>
+        <Pane fx:id="drawingAreaPane"
+              minWidth="0.0"
+              minHeight="0.0"
+              maxWidth="Infinity"
+              maxHeight="Infinity"
+              style="-fx-background-color: white;"
+              onMouseDragged="#drawingAreaMouseDragged"
+              BorderPane.alignment="CENTER"/>
+    </center>
+
+</BorderPane>

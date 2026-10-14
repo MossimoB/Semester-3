@@ -1,4 +1,4 @@
 mossimo\bianco\lab08_paint\App.class
-mossimo\bianco\lab08_paint\PrimaryController.class
 module-info.class
-mossimo\bianco\lab08_paint\SecondaryController.class
+mossimo\bianco\lab08_paint\PainterController.class
+mossimo\bianco\lab08_paint\PainterController$PenSize.class
