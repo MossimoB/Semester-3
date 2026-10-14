@@ -1,5 +1,3 @@
-// Git repository: ADD_YOUR_GIT_REPOSITORY_URL_HERE
-
 package mossimo.bianco.lab08_paint;
 
 import javafx.event.ActionEvent;
@@ -26,7 +24,6 @@ public class PainterController {
     @FXML
     private ToggleGroup colorToggleGroup;
 
-    // Must match fx:id="drawingAreaPane" in primary.fxml
     @FXML
     private Pane drawingAreaPane;
 
