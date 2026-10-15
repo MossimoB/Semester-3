@@ -1,0 +1,106 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefWidth="640.0"
+            prefHeight="480.0"
+            xmlns="http://javafx.com/javafx/11.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="mossimo.bianco.lab08_paint.SecondaryController">
+
+    <padding>
+        <Insets top="8.0" right="8.0" bottom="8.0" left="8.0"/>
+    </padding>
+
+    <left>
+        <VBox spacing="8.0"
+              maxHeight="Infinity"
+              BorderPane.alignment="CENTER">
+
+            <padding>
+                <Insets right="8.0"/>
+            </padding>
+
+            <TitledPane text="Drawing Color" expanded="true">
+                <content>
+                    <VBox spacing="8.0">
+                        <RadioButton fx:id="blackRadioButton"
+                                     text="Black"
+                                     selected="true"
+                                     onAction="#colorRadioButtonSelected">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="colorToggleGroup"/>
+                            </toggleGroup>
+                        </RadioButton>
+
+                        <RadioButton fx:id="redRadioButton"
+                                     text="Red"
+                                     toggleGroup="$colorToggleGroup"
+                                     onAction="#colorRadioButtonSelected"/>
+
+                        <RadioButton fx:id="blueRadioButton"
+                                     text="Blue"
+                                     toggleGroup="$colorToggleGroup"
+                                     onAction="#colorRadioButtonSelected"/>
+
+                        <RadioButton fx:id="greenRadioButton"
+                                     text="Green"
+                                     toggleGroup="$colorToggleGroup"
+                                     onAction="#colorRadioButtonSelected"/>
+                    </VBox>
+                </content>
+            </TitledPane>
+
+            <TitledPane text="Pen Size" expanded="true">
+                <content>
+                    <VBox spacing="8.0">
+                        <RadioButton fx:id="smallRadioButton"
+                                     text="Small"
+                                     onAction="#sizeRadioButtonSelected">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="sizeToggleGroup"/>
+                            </toggleGroup>
+                        </RadioButton>
+
+                        <RadioButton fx:id="mediumRadioButton"
+                                     text="Medium"
+                                     selected="true"
+                                     toggleGroup="$sizeToggleGroup"
+                                     onAction="#sizeRadioButtonSelected"/>
+
+                        <RadioButton fx:id="largeRadioButton"
+                                     text="Large"
+                                     toggleGroup="$sizeToggleGroup"
+                                     onAction="#sizeRadioButtonSelected"/>
+                    </VBox>
+                </content>
+            </TitledPane>
+
+            <Button text="Undo"
+                    maxWidth="Infinity"
+                    onAction="#undoButtonPressed"/>
+
+            <Button text="Clear"
+                    maxWidth="Infinity"
+                    onAction="#clearButtonPressed"/>
+
+        </VBox>
+    </left>
+
+    <center>
+        <Pane fx:id="drawingAreaPane"
+              maxWidth="Infinity"
+              maxHeight="Infinity"
+              style="-fx-background-color: white;"
+              onMouseDragged="#drawingAreaMouseDragged"/>
+    </center>
+
+</BorderPane>
