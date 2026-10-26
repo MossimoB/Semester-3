@@ -13,12 +13,20 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
+<<<<<<< HEAD
             <version>13</version>
+=======
+            <version>21.0.9</version>
+>>>>>>> 8f20526f568a14d6910c9d8517ecaeb9658e245b
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
+<<<<<<< HEAD
             <version>13</version>
+=======
+            <version>21.0.9</version>
+>>>>>>> 8f20526f568a14d6910c9d8517ecaeb9658e245b
         </dependency>
     </dependencies>
     <build>
@@ -34,7 +42,11 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
+<<<<<<< HEAD
                 <version>0.0.4</version>
+=======
+                <version>0.0.8</version>
+>>>>>>> 8f20526f568a14d6910c9d8517ecaeb9658e245b
                 <configuration>
                     <mainClass>mossimo.bianco.lab08_paint.App</mainClass>
                 </configuration>

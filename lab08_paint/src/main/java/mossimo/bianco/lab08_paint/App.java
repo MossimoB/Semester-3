@@ -1,12 +1,17 @@
 package mossimo.bianco.lab08_paint;
 
+<<<<<<< HEAD
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXML;
+=======
+import javafx.application.Application;
+>>>>>>> 8f20526f568a14d6910c9d8517ecaeb9658e245b
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+<<<<<<< HEAD
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
@@ -14,16 +19,25 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.Pane;
+=======
+
+import java.io.IOException;
+>>>>>>> 8f20526f568a14d6910c9d8517ecaeb9658e245b
 
 public class App extends Application {
 
     private static Scene scene;
 
     @Override
+<<<<<<< HEAD
     public void start(Stage stage) throws Exception {
         scene = new Scene(loadFXML("primary"));
 
         stage.setTitle("Painter");
+=======
+    public void start(Stage stage) throws IOException {
+        scene = new Scene(loadFXML("primary"), 640, 480);
+>>>>>>> 8f20526f568a14d6910c9d8517ecaeb9658e245b
         stage.setScene(scene);
         stage.show();
     }
@@ -33,6 +47,7 @@ public class App extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
+<<<<<<< HEAD
         return FXMLLoader.load(App.class.getResource(fxml + ".fxml"));
     }
     
@@ -148,3 +163,14 @@ public static class PainterController {
         launch(args);
     }
 }
+=======
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        return fxmlLoader.load();
+    }
+
+    public static void main(String[] args) {
+        launch();
+    }
+
+}
+>>>>>>> 8f20526f568a14d6910c9d8517ecaeb9658e245b

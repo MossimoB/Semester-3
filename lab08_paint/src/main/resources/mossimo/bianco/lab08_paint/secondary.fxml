@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8f20526f568a14d6910c9d8517ecaeb9658e245b
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<<<<<<< HEAD
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -104,3 +108,17 @@
     </center>
 
 </BorderPane>
+=======
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mossimo.bianco.lab08_paint.SecondaryController">
+    <children>
+        <Label text="Secondary View" />
+        <Button fx:id="secondaryButton" onAction="#switchToPrimary" text="Switch to Primary View" />
+    </children>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</VBox>
+>>>>>>> 8f20526f568a14d6910c9d8517ecaeb9658e245b
