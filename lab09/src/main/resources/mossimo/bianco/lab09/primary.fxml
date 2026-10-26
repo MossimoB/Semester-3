@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.HPos?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+
+<GridPane xmlns="http://javafx.com/javafx/21"
+          xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="mossimo.bianco.lab09.ColorChooserController"
+          hgap="8"
+          vgap="8"
+          prefWidth="-1"
+          prefHeight="-1">
+
+    <padding>
+        <Insets top="12" right="12" bottom="12" left="12"/>
+    </padding>
+
+    <columnConstraints>
+        <ColumnConstraints halignment="RIGHT"/>
+        <ColumnConstraints/>
+        <ColumnConstraints/>
+        <ColumnConstraints halignment="CENTER"/>
+    </columnConstraints>
+
+    <rowConstraints>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+        <RowConstraints/>
+    </rowConstraints>
+
+    <Label text="Red:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+
+    <Slider fx:id="redSlider"
+            min="0"
+            max="255"
+            value="255"
+            showTickMarks="true"
+            showTickLabels="false"
+            GridPane.rowIndex="0"
+            GridPane.columnIndex="1"/>
+
+    <TextField fx:id="redTextField"
+               prefWidth="50"
+               GridPane.rowIndex="0"
+               GridPane.columnIndex="2"/>
+
+    <Circle radius="40"
+            fill="WHITE"
+            GridPane.rowIndex="0"
+            GridPane.columnIndex="3"
+            GridPane.rowSpan="4"/>
+
+    <Rectangle fx:id="colorRectangle"
+               width="100"
+               height="100"
+               fill="RED"
+               GridPane.rowIndex="0"
+               GridPane.columnIndex="3"
+               GridPane.rowSpan="4"/>
+
+    <Label text="Green:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+
+    <Slider fx:id="greenSlider"
+            min="0"
+            max="255"
+            value="0"
+            showTickMarks="true"
+            GridPane.rowIndex="1"
+            GridPane.columnIndex="1"/>
+
+    <TextField fx:id="greenTextField"
+               prefWidth="50"
+               GridPane.rowIndex="1"
+               GridPane.columnIndex="2"/>
+
+    <Label text="Blue:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+
+    <Slider fx:id="blueSlider"
+            min="0"
+            max="255"
+            value="0"
+            showTickMarks="true"
+            GridPane.rowIndex="2"
+            GridPane.columnIndex="1"/>
+
+    <TextField fx:id="blueTextField"
+               prefWidth="50"
+               GridPane.rowIndex="2"
+               GridPane.columnIndex="2"/>
+
+    <Label text="Alpha:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+
+    <Slider fx:id="alphaSlider"
+            min="0"
+            max="1"
+            value="1"
+            blockIncrement="0.1"
+            showTickMarks="true"
+            GridPane.rowIndex="3"
+            GridPane.columnIndex="1"/>
+
+    <TextField fx:id="alphaTextField"
+               prefWidth="50"
+               GridPane.rowIndex="3"
+               GridPane.columnIndex="2"/>
+
+</GridPane>
