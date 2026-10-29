@@ -1,9 +1,5 @@
 package mossimo.bianco.assignment02.model;
 
-/**
- *
- * @author sport
- */
 public enum CarType {
     SPORTS_COUPE("Sports Coupe"),
     SEDAN("Sedan"),
