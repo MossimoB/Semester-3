@@ -1,8 +1,12 @@
 package mossimo.bianco.assignment02.view;
 
+import java.util.List;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -138,5 +142,56 @@ public class CarShape extends Group {
         return text;
     }
     
-    
+    /**
+     * Creates a wheel: a tire circle, a spoke line from the center to the edge
+     * and a small hub. Grouping them lets the whole wheel rotate around its
+     * center
+     */
+    private static Group createWheel(double centerX, double centerY) {
+        Circle tire = new Circle(centerX, centerY, WHEEL_RADIUS);
+        tire.setFill(Color.web("#212121"));
+        tire.setStroke(Color.web("#9e9e9e"));
+        tire.setStrokeWidth(2);
+
+        Line spoke = new Line(centerX, centerY, centerX, centerY - WHEEL_RADIUS + 1);
+        spoke.setStroke(Color.web("#f5f5f5"));
+        spoke.setStrokeWidth(2);
+
+        Circle hub = new Circle(centerX, centerY, 2.5, Color.web("#bdbdbd"));
+
+        return new Group(tire, spoke, hub);
+    }
+
+    /**
+     * Turns the gold winner glow on or off
+     *
+     * @param highlighted true to show the glow
+     */
+    public void setHighlighted(boolean highlighted) {
+        if (highlighted) {
+            DropShadow glow = new DropShadow(22, Color.GOLD);
+            glow.setSpread(0.45);
+            setEffect(glow);
+        } else {
+            setEffect(null);
+        }
+    }
+
+    /**
+     * Returns the two wheel groups (rear, front) so they can be rotated
+     *
+     * @return the wheels of this car
+     */
+    public List<Node> getWheels() {
+        return List.of(rearWheel, frontWheel);
+    }
+
+    /**
+     * Returns the model car drawn by this shape.
+     *
+     * @return the car
+     */
+    public Car getCar() {
+        return car;
+    }
 }
