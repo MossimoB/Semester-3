@@ -1,6 +1,9 @@
 package mossimo.bianco.assignment02.view;
 
 import javafx.scene.Group;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import mossimo.bianco.assignment02.model.Car;
 
 /**
  * Draws one car using JavaFX shapes only: Polygon objects for the body and the
@@ -24,4 +27,53 @@ public class CarShape extends Group {
     public static final double WHEEL_RADIUS = 10;
     
     private static final double BODY_TOP = 18;
+    private static final double WHEEL_Y = 40;
+    private static final double REAR_WHEEL_X = 28;
+    private static final double FRONT_WHEEL_X = 92;
+    
+    private final Car car;
+    private final Group rearWheel;
+    private final Group frontWheel;
+    
+    /**
+     * Builds the shapes for the given car
+     * @param car  the model car this shape represents
+     */
+    public CarShape(Car car) {
+        this.car = car;
+        Color paint = car.getColor();
+        
+        // Roof: a different profile for each car type
+        double[] roofPoints = getRoofPoints(car.getType());
+        Polygon roof = new Polygon(roofPoints);
+        roof.setFill(paint.darker());
+        roof.setStroke(Color.BLACK);
+        
+        // Windows: two rectangles that fit under the flat top of the roof
+        double roofLeft = roofPoints[2];
+        double roofTop = roofPoints[3];
+        double roofRight = roofPoints[4];
+        double gap = 4;
+        double windowY = roofTop + 2;
+        double windowHeight = BODY_TOP + roofTop - 4;
+        double windowWidth = (roofRight - roofLeft - gap) / 2;
+        Rectangle rearWindow = createWindow(roofLeft, windowY, windowWidth, windowHeight);
+        Rectangle frontWindow = createWindow(roofLeft + windowWidth + gap,
+                windowY, windowWidth, windowHeight);
+        
+        // Body: lower part of the car, sloped hood at the front
+        Polygon body = new Polygon(
+                0, WHEEL_Y,
+                0, 24,
+                8, BODY_TOP,
+                104, BODY_TOP,
+                LENGTH, 27,
+                LENGTH, WHEEL_Y
+        );
+        body.setFill(paint);
+        body.setStroke(Color.BLACK);
+        
+        Cirlce headlight = new Circle()
+        
+    }
 }
