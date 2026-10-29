@@ -2,8 +2,14 @@ package mossimo.bianco.assignment02.view;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import mossimo.bianco.assignment02.model.Car;
+import mossimo.bianco.assignment02.model.CarType;
 
 /**
  * Draws one car using JavaFX shapes only: Polygon objects for the body and the
@@ -72,8 +78,65 @@ public class CarShape extends Group {
         );
         body.setFill(paint);
         body.setStroke(Color.BLACK);
+
+        Circle headlight = new Circle(LENGTH - 4, 25, 2.5, Color.web("#fff59d"));
+        Rectangle taillight = new Rectangle(0, 24, 3, 6);
+        taillight.setFill(Color.web("#ff1744"));
         
-        Cirlce headlight = new Circle()
-        
+        Text numberText = createNumberText(car.getNumber());
+
+        rearWheel = createWheel(REAR_WHEEL_X, WHEEL_Y);
+        frontWheel = createWheel(FRONT_WHEEL_X, WHEEL_Y);
+
+        getChildren().addAll(roof, rearWindow, frontWindow, body,
+                headlight, taillight, numberText, rearWheel, frontWheel);
     }
+    
+    /**
+     * Returns the 4 roof corners (bottom-left, top-left, top-right,
+     * bottom-right) for a car type
+     */
+    private static double[] getRoofPoints(CarType type) {
+        switch (type) {
+            case SPORTS_COUPE:
+                return new double[]{34, BODY_TOP, 48, 5, 80, 5, 100, BODY_TOP};
+            case SEDAN:
+                return new double[]{22, BODY_TOP, 34, 3, 82, 3, 96, BODY_TOP};
+            case MUSCLE_CAR:
+                return new double[]{28, BODY_TOP, 36, 4, 84, 4, 94, BODY_TOP};
+            case HATCHBACK:
+                return new double[]{8, BODY_TOP, 12, 3, 80, 3, 98, BODY_TOP};
+            case ROADSTER:
+            default:
+                return new double[]{44, BODY_TOP, 54, 8, 74, 8, 86, BODY_TOP};
+        }
+    }
+    
+    /**
+     * Creates one light blue window
+     */
+    private static Rectangle createWindow(double x, double y, double width, double height) {
+        Rectangle window = new Rectangle(x, y, width, height);
+        window.setFill(Color.web("#b3e5fc"));
+        window.setStroke(Color.web("#263238"));
+        window.setStrokeWidth(0.8);
+        return window;
+    }
+    
+    /**
+     * Creates the car number, centered on the side of the body
+     */
+    private static Text createNumberText(int number) {
+        Text text = new Text(String.valueOf(number));
+        text.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+        text.setFill(Color.WHITE);
+        text.setStroke(Color.BLACK);
+        text.setStrokeWidth(0.6);
+        double textWidth = text.getLayoutBounds().getWidth();
+        text.setX(LENGTH / 2 - textWidth / 2);
+        text.setY(35);
+        return text;
+    }
+    
+    
 }
