@@ -1,13 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package mossimo.bianco.assignment02.model;
 
 /**
  *
  * @author sport
  */
-public class CarType {
+public enum CarType {
+    SPORTS_COUPE("Sports Coupe"),
+    SEDAN("Sedan"),
+    MUSCLE_CAR("Muscle Car"),
+    HATCHBACK("Hatchback"),
+    ROADSTER("Roadster");
     
+    private final String displayName;
+    
+    /**
+     * Creates a car type with the name shown to the user
+     * @param displayName  readable name of the car type
+     */
+    CarType(String displayName) {
+        this.displayName = displayName;
+    }
+    
+    public String getDisplayName() {
+        return displayName;
+    }
 }
