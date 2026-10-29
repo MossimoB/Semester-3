@@ -119,5 +119,43 @@ public class CarRaceModel {
         return leader;
     }
     
-    //git commit -m "last commit didnt work, but i solved the random function and added more after it"
+    /**
+     * Returns how much of the track a car has covered, from 0.0 to 1.0
+     *
+     * @param car the car to check
+     * @return the fraction of the race completed
+     */
+    public double getProgress(Car car) {
+        double progress = (car.getX() - START_LINE_X) / getRaceDistance();
+        return Math.max(0, Math.min(1, progress));
+    }
+
+    /**
+     * Returns the time a car needs to finish the race at normal speed (1x)
+     *
+     * @param car the car
+     * @return the race time in seconds
+     */
+    public double getRaceTime(Car car) {
+        return getRaceDistance() / car.getSpeed();
+    }
+    
+    /**
+     * Returns the distance between the start line and the finish line
+     *
+     * @return the race distance in pixels
+     */
+    public double getRaceDistance() {
+        return FINISH_LINE_X - START_LINE_X;
+    }
+
+    /**
+     * Returns the y coordinate of the top of a lane
+     *
+     * @param lane the lane index, starting at 0
+     * @return the y coordinate of the lane's top edge
+     */
+    public double getLaneTop(int lane) {
+        return TRACK_TOP + lane * LANE_HEIGHT;
+    }
 }
