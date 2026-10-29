@@ -158,4 +158,61 @@ public class CarRaceModel {
     public double getLaneTop(int lane) {
         return TRACK_TOP + lane * LANE_HEIGHT;
     }
+    
+    /**
+     * Puts every car back on the start line, clears the results and picks new
+     * random speeds for the next race
+     */
+    public void reset() {
+        finishOrder.clear();
+        for (Car car : cars) {
+            car.reset();
+        }
+        randomizeSpeeds();
+    }
+
+    /**
+     * Returns the winner of the race
+     *
+     * @return the first car to cross the finish line, or null if none has
+     */
+    public Car getWinner() {
+        return finishOrder.isEmpty() ? null : finishOrder.get(0);
+    }
+    
+    /**
+     * Checks whether every car has crossed the finish line
+     *
+     * @return true when the race is over
+     */
+    public boolean isRaceOver() {
+        return finishOrder.size() == cars.size();
+    }
+
+    /**
+     * Returns the cars in the order they crossed the finish line
+     *
+     * @return a read-only list of finished cars
+     */
+    public List<Car> getFinishOrder() {
+        return Collections.unmodifiableList(finishOrder);
+    }
+    
+    /**
+     * Returns all the cars in lane order
+     *
+     * @return a read-only list of the cars
+     */
+    public List<Car> getCars() {
+        return Collections.unmodifiableList(cars);
+    }
+
+    /**
+     * Returns the number of lanes on the track (one per car)
+     *
+     * @return the number of lanes
+     */
+    public int getNumberOfLanes() {
+        return cars.size();
+    }
 }
