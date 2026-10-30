@@ -5,6 +5,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import mossimo.bianco.assignment02.model.CarRaceModel;
 
 /**
@@ -91,7 +94,7 @@ public class RaceTrackView extends Pane {
     }
 
     /**
-     * Draws dashed white lines between the lanes.
+     * Draws dashed white lines between the lanes
      */
     private void drawLaneDividers(CarRaceModel model, int lanes) {
         for (int lane = 1; lane < lanes; lane++) {
@@ -102,5 +105,79 @@ public class RaceTrackView extends Pane {
             divider.getStrokeDashArray().addAll(22.0, 16.0);
             trackLayer.getChildren().add(divider);
         }
+    }
+    
+    /**
+     * Writes the lane number at the left edge of each lane
+     */
+    private void drawLaneNumbers(CarRaceModel model, int lanes) {
+        for (int lane = 0; lane < lanes; lane++) {
+            Text label = new Text(6, model.getLaneTop(lane) + CarRaceModel.LANE_HEIGHT / 2 + 5,
+                    String.valueOf(lane + 1));
+            label.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+            label.setFill(Color.rgb(255, 255, 255, 0.55));
+            trackLayer.getChildren().add(label);
+        }
+    }
+
+    /**
+     * Draws the white start line and its label
+     */
+    private void drawStartLine(double top, double height) {
+        Rectangle line = new Rectangle(CarRaceModel.START_LINE_X - 3, top, 6, height);
+        line.setFill(Color.WHITE);
+        trackLayer.getChildren().addAll(line,
+                createLineLabel("START", CarRaceModel.START_LINE_X, top));
+    }
+    
+    /**
+     * Draws a two-column checkered finish line and its label
+     */
+    private void drawFinishLine(double top, double height) {
+        int rows = (int) Math.ceil(height / SQUARE_SIZE);
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < 2; column++) {
+                double squareHeight = Math.min(SQUARE_SIZE, top + height - (top + row * SQUARE_SIZE));
+                Rectangle square = new Rectangle(
+                        CarRaceModel.FINISH_LINE_X + column * SQUARE_SIZE,
+                        top + row * SQUARE_SIZE, SQUARE_SIZE, squareHeight);
+                square.setFill((row + column) % 2 == 0 ? Color.WHITE : Color.BLACK);
+                trackLayer.getChildren().add(square);
+            }
+        }
+        trackLayer.getChildren().add(
+                createLineLabel("FINISH", CarRaceModel.FINISH_LINE_X + SQUARE_SIZE, top));
+    }
+    
+    /**
+     * Creates a label centered above a line on the grass
+     */
+    private Text createLineLabel(String text, double centerX, double asphaltTop) {
+        Text label = new Text(text);
+        label.setFont(Font.font("Arial", FontWeight.BOLD, 13));
+        label.setFill(Color.WHITE);
+        label.setX(centerX - label.getLayoutBounds().getWidth() / 2);
+        label.setY(asphaltTop - CURB_HEIGHT - 6);
+        return label;
+    }
+
+    /**
+     * Places a car on the track. The car's front bumper is put on the car's
+     * x position and the car is centered vertically in its lane
+     *
+     * @param carShape the car to add
+     */
+    public void addCar(CarShape carShape) {
+        carShape.setLayoutX(carShape.getCar().getStartX() - CarShape.LENGTH);
+        carShape.setLayoutY(carShape.getCar().getY()
+                + (CarRaceModel.LANE_HEIGHT - CarShape.HEIGHT) / 2);
+        carLayer.getChildren().add(carShape);
+    }
+    
+    /**
+     * Removes all cars from the track
+     */
+    public void clearCars() {
+        carLayer.getChildren().clear();
     }
 }
