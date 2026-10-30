@@ -31,6 +31,35 @@
             <RaceTrackView fx:id="raceTrack"/>
         </StackPane>
     </center>
-    <bottom>
-        
+   <bottom>
+        <HBox spacing="16" styleClass="bottom-bar">
+            <!-- Simulation controls: bottom-left -->
+            <VBox spacing="12" styleClass="panel" minWidth="330" prefWidth="330">
+                <Label text="RACE CONTROLS" styleClass="panel-title"/>
+                <HBox spacing="10">
+                    <Button fx:id="startButton" text="Start" onAction="#handleStart"
+                            styleClass="race-button,start-button"/>
+                    <Button fx:id="pauseButton" text="Pause" onAction="#handlePause"
+                            styleClass="race-button,pause-button"/>
+                    <Button fx:id="resetButton" text="Reset" onAction="#handleReset"
+                            styleClass="race-button,reset-button"/>
+                </HBox>
+                <Label text="Simulation speed" styleClass="panel-label"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Slider fx:id="speedSlider" min="0.25" max="3" value="1"
+                            majorTickUnit="0.5" minorTickCount="1"
+                            showTickMarks="true" showTickLabels="true" HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="speedValueLabel" text="1.00x" styleClass="speed-value"/>
+                </HBox>
+            </VBox>
+            <!-- Messages: bottom-right -->
+            <VBox spacing="6" styleClass="panel,message-panel" HBox.hgrow="ALWAYS">
+                <Label text="RACE MESSAGES" styleClass="panel-title"/>
+                <Label fx:id="messageTitleLabel" styleClass="message-title" wrapText="true"/>
+                <Label fx:id="messageBodyLabel" styleClass="message-body" wrapText="true"/>
+                <VBox fx:id="resultsBox" spacing="1"/>
+                <Label fx:id="animationInfoLabel" styleClass="animation-info" wrapText="true"/>
+            </VBox>
+        </HBox>
     </bottom>
+</BorderPane>
