@@ -107,4 +107,78 @@
     -fx-padding: 5 14 5 14;
 }
 
+.track-frame {
+    -fx-padding: 12 20 8 20;
+}
+
+.race-track {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 16, 0.2, 0, 4);
+}
+
+.bottom-bar {
+    -fx-padding: 6 20 18 20;
+}
+
+.panel {
+    -fx-background-color: #1e2a33;
+    -fx-background-radius: 10;
+    -fx-border-color: #2f3e49;
+    -fx-border-radius: 10;
+    -fx-padding: 12 16 14 16;
+}
+
+.panel-title {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #78909c;
+}
+
+.panel-label {
+    -fx-text-fill: #cfd8dc;
+    -fx-font-size: 13px;
+}
+
+.race-button {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18 8 18;
+    -fx-min-width: 90px;
+    -fx-cursor: hand;
+}
+
+.start-button {
+    -fx-background-color: #2e7d32;
+}
+
+.start-button:hover {
+    -fx-background-color: #388e3c;
+}
+
+.pause-button {
+    -fx-background-color: #f9a825;
+    -fx-text-fill: #212121;
+}
+
+.pause-button:hover {
+    -fx-background-color: #fbc02d;
+}
+
+.reset-button {
+    -fx-background-color: #c62828;
+}
+
+.reset-button:hover {
+    -fx-background-color: #d32f2f;
+}
+
+.race-button:disabled {
+    -fx-opacity: 0.35;
+}
+
+.slider .axis {
+    -fx-tick-label-fill: #90a4ae;
+}
+
 
