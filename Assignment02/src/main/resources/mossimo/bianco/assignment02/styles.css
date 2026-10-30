@@ -181,4 +181,45 @@
     -fx-tick-label-fill: #90a4ae;
 }
 
+.speed-value {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ff9e40;
+    -fx-min-width: 52px;
+}
 
+.message-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffcc80;
+}
+
+.message-body {
+    -fx-font-size: 13px;
+    -fx-text-fill: #eceff1;
+}
+
+.result-row {
+    -fx-font-family: "Monospaced";
+    -fx-font-size: 13px;
+    -fx-text-fill: #cfd8dc;
+}
+
+.result-row.place-1 {
+    -fx-text-fill: #ffd54f;
+    -fx-font-weight: bold;
+}
+
+.result-row.place-2 {
+    -fx-text-fill: #e0e0e0;
+}
+
+.result-row.place-3 {
+    -fx-text-fill: #ffab91;
+}
+
+.animation-info {
+    -fx-font-size: 11px;
+    -fx-text-fill: #90a4ae;
+    -fx-padding: 4 0 0 0;
+}
