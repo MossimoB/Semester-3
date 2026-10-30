@@ -46,5 +46,65 @@
 }
 
 .car-details {
-    -fx-
+    -fx-font-size: 15px;
+    -fx-text-fill: #cfd8dc;
 }
+
+.slide-dot {
+    -fx-fill: #455a64;
+}
+
+.slide-dot.active {
+    -fx-fill: #ff6d00;
+}
+
+.slideshow-footer {
+    -fx-padding: 14 24 18 24;
+}
+
+.slide-counter {
+    -fx-text-fill: #90a4ae;
+    -fx-font-size: 13px;
+}
+
+.skip-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #90a4ae;
+    -fx-border-radius: 18;
+    -fx-background-radius: 18;
+    -fx-text-fill: #eceff1;
+    -fx-padding: 6 18 6 18;
+    -fx-cursor: hand;
+}
+
+.skip-button:hover {
+    -fx-border-color: #ff6d00;
+    -fx-text-fill: #ff9e40;
+}
+
+/* ---------- Race screen ---------- */
+.race-root {
+    -fx-backgorund-color: #121a21;
+}
+
+.race-header {
+    -fx-background-color: linear-gradient(to right, #b71c1c, #e65100);
+    -fx-padding: 12 20 12 20;
+}
+
+.header-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.status-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: rgba(0, 0, 0, 0.25);
+    -fx-background-radius: 14;
+    -fx-padding: 5 14 5 14;
+}
+
+
