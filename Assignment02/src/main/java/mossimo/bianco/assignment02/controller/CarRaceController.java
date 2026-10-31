@@ -1,6 +1,6 @@
 package mossimo.bianco.assignment02.controller;
 
-import java.lang.classfile.Label;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +13,10 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import mossimo.bianco.assignment02.model.Car;
 import mossimo.bianco.assignment02.model.CarRaceModel;
 import mossimo.bianco.assignment02.view.CarShape;
@@ -122,7 +124,7 @@ public class CarRaceController {
     }
     
     /**
-     * Pauses every car and wheel animation.
+     * Pauses every car and wheel animation
      */
     @FXML
     private void handlePause() {
@@ -146,7 +148,7 @@ public class CarRaceController {
     
     /**
      * Stops the race and puts everything back to its initial state with new
-     * random speeds.
+     * random speeds
      */
     @FXML
     private void handleReset() {
@@ -164,5 +166,69 @@ public class CarRaceController {
         state = RaceState.READY;
         showReadyMessage();
         updateControls();
+    }
+    
+    // Animations
+    /**
+     * Creates a TranslateTransition for each car (start line to finish line)
+     * and an endless RotateTransition for each wheel. The duration of each
+     * transition comes from the car's speed in the model.
+     */
+    private void buildAnimations() {
+        carMoves.clear();
+        wheelSpins.clear();
+
+        for (CarShape shape : carShapes) {
+            Car car = shape.getCar();
+
+            TranslateTransition move = new TranslateTransition(
+                    Duration.seconds(model.getRaceTime(car)), shape);
+            move.setFromX(0);
+            move.setToX(model.getRaceDistance());
+            move.setInterpolator(createRacingInterpolator());
+            move.setOnFinished(event -> handleCarFinished(shape));
+            carMoves.put(car, move);
+
+            // One full turn of the wheel covers its circumference
+            double secondsPerTurn = 2 * Math.PI * CarShape.WHEEL_RADIUS / car.getSpeed();
+            List<RotateTransition> spins = new ArrayList<>();
+            for (Node wheel : shape.getWheels()) {
+                RotateTransition spin = new RotateTransition(Duration.seconds(secondsPerTurn), wheel);
+                spin.setByAngle(360);
+                spin.setCycleCount(Animation.INDEFINITE);
+                spin.setInterpolator(Interpolator.LINEAR);
+                spins.add(spin);
+            }
+            wheelSpins.put(car, spins);
+        }
+        applySimulationSpeed();
+    }
+    
+    /**
+     * Creates a random spline interpolator. Every car still finishes in the
+     * time given by its speed, but some cars start fast and fade while others
+     * start slow and finish strong, so the lead changes during the race.
+     */
+    private Interpolator createRacingInterpolator() {
+        double earlyPace = 0.10 + random.nextDouble() * 0.35;
+        double latePace = 0.55 + random.nextDouble() * 0.35;
+        return Interpolator.SPLINE(0.25, earlyPace, 0.75, latePace);
+    }
+    
+    /**
+     * Plays (or resumes) every car and wheel animation that has not finished.
+     */
+    private void playAll() {
+        applySimulationSpeed();
+        for (CarShape shape : carShapes) {
+            Car car = shape.getCar();
+            if (car.isFinished()) {
+                continue;
+            }
+            carMoves.get(car).play();
+            for (RotateTransition spin : wheelSpins.get(car)) {
+                spin.play();
+            }
+        }
     }
 }
