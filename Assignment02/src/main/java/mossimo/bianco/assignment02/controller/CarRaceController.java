@@ -121,5 +121,48 @@ public class CarRaceController {
         updateControls();
     }
     
+    /**
+     * Pauses every car and wheel animation.
+     */
+    @FXML
+    private void handlePause() {
+        if (state != RaceState.RUNNING) {
+            return;
+        }
+        for (TranslateTransition move : carMoves.values()) {
+            move.pause();
+        }
+        for (List<RotateTransition> spins : wheelSpins.values()) {
+            for (RotateTransition spin : spins) {
+                spin.pause();
+            }
+        }
+        progressTracker.stop();
+        state = RaceState.PAUSED;
+        statusLabel.setText("Paused  |  Leader: " + describeShort(model.getLeader()));
+        showMessage("Race paused", "Press Resume to continue or Reset to start over.");
+        updateControls();
+    }
     
+    /**
+     * Stops the race and puts everything back to its initial state with new
+     * random speeds.
+     */
+    @FXML
+    private void handleReset() {
+        stopAll();
+        progressTracker.stop();
+        model.reset();
+        for (CarShape shape : carShapes) {
+            shape.setTranslateX(0);
+            shape.setHighlighted(false);
+            for (Node wheel : shape.getWheels()) {
+                wheel.setRotate(0);
+            }
+        }
+        buildAnimations();
+        state = RaceState.READY;
+        showReadyMessage();
+        updateControls();
+    }
 }
