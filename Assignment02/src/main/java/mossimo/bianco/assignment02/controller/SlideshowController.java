@@ -1,12 +1,15 @@
 package mossimo.bianco.assignment02.controller;
 
 import java.util.List;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import mossimo.bianco.assignment02.model.Car;
 import mossimo.bianco.assignment02.model.CarRaceModel;
@@ -50,7 +53,35 @@ public class SlideshowController {
      * @param onFinished action to run when the slideshow is over
      */
     public void startSlideshow(CarRaceModel model, Runnable onFinished) {
-        
+                this.cars = model.getCars();
+        this.onFinished = onFinished;
+
+        for (int i = 0; i < cars.size(); i++) {
+            Circle dot = new Circle(5);
+            dot.getStyleClass().add("slide-dot");
+            dotsBox.getChildren().add(dot);
+        }
+
+        currentSlide = 0;
+        showSlide(currentSlide);
+
+        // Every SLIDE_DELAY, move to the next car; after the last car, finish
+        slideTimer = new Timeline(new KeyFrame(SLIDE_DELAY, event -> nextSlide()));
+        slideTimer.setCycleCount(Animation.INDEFINITE);
+        slideTimer.play();
+
+        playMusic();
     }
     
+    /**
+     * Moves to the next car, or ends the slideshow after the last one.
+     */
+    private void nextSlide() {
+        currentSlide++;
+        if (currentSlide < cars.size()) {
+            showSlide(currentSlide);
+        } else {
+            finishSlideshow();
+        }
+    }
 }
