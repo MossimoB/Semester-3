@@ -323,13 +323,10 @@ public class CarRaceController {
     private void showFinalResults() {
         Car winner = model.getWinner();
         statusLabel.setText("Race over  |  Winner: " + describeShort(winner));
-        messageTitleLabel.setText("Congratulations, Car #" + winner.getNumber()
+        messageTitleLabel.setText("Congratulations Car #" + winner.getNumber()
                 + " (" + winner.getColorName() + ")!");
         messageBodyLabel.setText("The " + winner.getDescription()
                 + " wins the race. Final results:");
-        animationInfoLabel.setText("Animations: TranslateTransition with spline easing (car movement), "
-                + "RotateTransition (wheel spokes), AnimationTimer (live leader tracking), "
-                + "FadeTransition (intro slideshow).");
         animationInfoLabel.setVisible(true);
         animationInfoLabel.setManaged(true);
     }

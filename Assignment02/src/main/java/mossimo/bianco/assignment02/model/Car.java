@@ -46,6 +46,15 @@ public class Car {
     }
     
     /**
+     * Puts the car back on the start line and clears its race result
+     */
+    public void reset() {
+        x = startX;
+        finished = false;
+        finishPlace = 0;
+    }
+    
+    /**
      * Returns a short description such as "Red Sports Coupe #7"
      * @return the description of the car
      */

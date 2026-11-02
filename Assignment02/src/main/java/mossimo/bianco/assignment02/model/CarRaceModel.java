@@ -41,7 +41,7 @@ public class CarRaceModel {
      * and gives them random speeds
      */
     public CarRaceModel() {
-        addCar(CarType.SPORTS_COUPE, 7, Color.web("#e5395"), "Red");
+        addCar(CarType.SPORTS_COUPE, 7, Color.web("#e53935"), "Red");
         addCar(CarType.SEDAN, 12, Color.web("#1e88e5"), "Blue");
         addCar(CarType.MUSCLE_CAR, 23, Color.web("#43a047"), "Green");
         addCar(CarType.HATCHBACK, 44, Color.web("#fdd835"), "Yellow");
