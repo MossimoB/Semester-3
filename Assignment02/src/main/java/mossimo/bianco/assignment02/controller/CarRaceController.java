@@ -231,4 +231,88 @@ public class CarRaceController {
             }
         }
     }
+    
+    /**
+     * Stops every car and wheel animation
+     */
+    private void stopAll() {
+        for (TranslateTransition move : carMoves.values()) {
+            move.stop();
+        }
+        for (List<RotateTransition> spins : wheelSpins.values()) {
+            for (RotateTransition spin : spins) {
+                spin.stop();
+            }
+        }
+    }
+    
+    /**
+     * Applies the slider value as the playback rate of every animation
+     */
+    private void applySimulationSpeed() {
+        double rate = speedSlider.getValue();
+        for (TranslateTransition move : carMoves.values()) {
+            move.setRate(rate);
+        }
+        for (List<RotateTransition> spins : wheelSpins.values()) {
+            for (RotateTransition spin : spins) {
+                spin.setRate(rate);
+            }
+        }
+    }
+    
+    /**
+     * Creates a timer that runs every frame while the race is running
+     * It copies each car's position into the model and updates the status bar
+     * with the current leader
+     */
+    private AnimationTimer createProgressTracker() {
+        return new AnimationTimer() {
+            private long lastStatusUpdate;
+
+            @Override
+            public void handle(long now) {
+                for (CarShape shape : carShapes) {
+                    if (!shape.getCar().isFinished()) {
+                        model.updatePosition(shape.getCar(), shape.getTranslateX());
+                    }
+                }
+                if (now - lastStatusUpdate > STATUS_REFRESH_NANOS) {
+                    lastStatusUpdate = now;
+                    Car leader = model.getLeader();
+                    statusLabel.setText(String.format("Leader: %s  |  %d%% of the track",
+                            describeShort(leader), Math.round(model.getProgress(leader) * 100)));
+                }
+            }
+        };
+    }
+    
+    // Race Results
+    /**
+     * Called when a car's TranslateTransition ends, which means its front
+     * bumper reached the finish line. The first car to arrive is the winner.
+     */
+    private void handleCarFinished(CarShape shape) {
+        Car car = shape.getCar();
+        model.updatePosition(car, shape.getTranslateX());
+        int place = model.recordFinish(car);
+        for (RotateTransition spin : wheelSpins.get(car)) {
+            spin.stop();
+        }
+
+        if (place == 1) {
+            shape.setHighlighted(true);
+            showMessage("Car #" + car.getNumber() + " crosses the line first!",
+                    "The " + car.getDescription() + " takes the win. "
+                    + "Waiting for the rest of the field...");
+        }
+        addResultRow(car);
+
+        if (model.isRaceOver()) {
+            progressTracker.stop();
+            state = RaceState.FINISHED;
+            showFinalResults();
+            updateControls();
+        }
+    }
 }
