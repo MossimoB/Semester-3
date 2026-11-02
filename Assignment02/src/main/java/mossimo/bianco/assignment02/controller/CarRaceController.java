@@ -315,4 +315,95 @@ public class CarRaceController {
             updateControls();
         }
     }
+    
+    /**
+     * Shows the congratulation message, the final order and a short summary
+     * of the animations used
+     */
+    private void showFinalResults() {
+        Car winner = model.getWinner();
+        statusLabel.setText("Race over  |  Winner: " + describeShort(winner));
+        messageTitleLabel.setText("Congratulations, Car #" + winner.getNumber()
+                + " (" + winner.getColorName() + ")!");
+        messageBodyLabel.setText("The " + winner.getDescription()
+                + " wins the race. Final results:");
+        animationInfoLabel.setText("Animations: TranslateTransition with spline easing (car movement), "
+                + "RotateTransition (wheel spokes), AnimationTimer (live leader tracking), "
+                + "FadeTransition (intro slideshow).");
+        animationInfoLabel.setVisible(true);
+        animationInfoLabel.setManaged(true);
+    }
+    
+    /**
+     * Adds one line to the results list, for example "1st  #7  Red Sports
+     * Coupe  5.84 s"
+     */
+    private void addResultRow(Car car) {
+        int place = car.getFinishPlace();
+        Label row = new Label(String.format("%-4s  #%-3d %-22s %5.2f s",
+                getOrdinal(place), car.getNumber(),
+                car.getColorName() + " " + car.getType().getDisplayName(),
+                model.getRaceTime(car)));
+        row.getStyleClass().add("result-row");
+        if (place <= 3) {
+            row.getStyleClass().add("place-" + place);
+        }
+        resultsBox.getChildren().add(row);
+    }
+
+    /**
+     * Converts a place number to "1st", "2nd", "3rd", "4th"...
+     */
+    private static String getOrdinal(int place) {
+        switch (place) {
+            case 1:
+                return "1st";
+            case 2:
+                return "2nd";
+            case 3:
+                return "3rd";
+            default:
+                return place + "th";
+        }
+    }
+    
+    // Messages and Controls
+    
+    /**
+     * Shows the message displayed before the race starts
+     */
+    private void showReadyMessage() {
+        resultsBox.getChildren().clear();
+        animationInfoLabel.setVisible(false);
+        animationInfoLabel.setManaged(false);
+        statusLabel.setText("Ready  |  5 cars on the grid");
+        showMessage("Cars on the grid",
+                "Press Start to begin. Each race uses new random speeds, so any "
+                + "car can win. Use the slider to slow down or speed up the simulation.");
+    }
+
+    /**
+     * Updates the title and body of the message area
+     */
+    private void showMessage(String title, String body) {
+        messageTitleLabel.setText(title);
+        messageBodyLabel.setText(body);
+    }
+
+    /**
+     * Returns a short description like "Car #7 (Red)"
+     */
+    private static String describeShort(Car car) {
+        return "Car #" + car.getNumber() + " (" + car.getColorName() + ")";
+    }
+
+    /**
+     * Enables or disables the buttons to match the race state
+     */
+    private void updateControls() {
+        startButton.setText(state == RaceState.PAUSED ? "Resume" : "Start");
+        startButton.setDisable(state == RaceState.RUNNING || state == RaceState.FINISHED);
+        pauseButton.setDisable(state != RaceState.RUNNING);
+        resetButton.setDisable(state == RaceState.READY);
+    }
 }
